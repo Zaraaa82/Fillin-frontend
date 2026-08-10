@@ -6,7 +6,7 @@ async function getSkills() {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 

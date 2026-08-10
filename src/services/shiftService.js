@@ -6,7 +6,7 @@ async function getAllShifts() {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -16,7 +16,7 @@ async function getShiftById(shiftId) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -26,7 +26,7 @@ async function getShiftsByBusiness(businessId) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -36,7 +36,7 @@ async function createShift(body) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -46,7 +46,7 @@ async function updateShift(shiftId, body) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -56,7 +56,7 @@ async function cancelShift(shiftId) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
