@@ -6,7 +6,7 @@ async function getMyProfile() {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     }   
 }
 
@@ -16,7 +16,7 @@ async function getBusinessProfile(businessId) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     } 
 }
 
@@ -26,7 +26,7 @@ async function createProfile(body) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     } 
 }
 
@@ -36,7 +36,7 @@ async function updateProfile(body) {
         return response.data;
 
     }catch(err){
-        throw new Error (err.response.data.message);
+        throw new Error (err.response?.data?.message || err.message);
     } 
 }
 
