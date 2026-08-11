@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { createProfile, updateProfile } from '../../../services/businessProfileService';
+import { useAuth } from '../../../context/AuthContext';
+import { useNavigate } from 'react-router';
+
 
 function ProfileForm({ profile }) {
+  const {user, setUser} = useAuth();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const navigate = useNavigate();
 
   const initialForm = {
     name: '',
@@ -35,6 +41,32 @@ function ProfileForm({ profile }) {
 
     fetchProfile();
   }, [profile]);
+  
+  async function handleSubmit(event){
+    event.preventDefault();
+    try{
+      setSending(true);
+      setError(null);
+
+      const hasExistingProfile = Boolean(profile);
+       if (!hasExistingProfile) {
+        await createProfile(formdata);
+      } else {
+        await updateProfile(formdata);
+      }
+      setUser((prev) => ({
+        ...prev,
+        isProfileComplete: true,
+      }));
+      navigate('/profile/me');
+
+
+    }catch(err){
+      setError(err.message);
+    }finally{
+      setSending(false);
+    }
+  }
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -44,12 +76,17 @@ function ProfileForm({ profile }) {
     }));
   }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if(error){
+    return <p>Error: {error}</p>
+  }
 
   return (
     <div className="business-profile-form">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
@@ -57,17 +94,23 @@ function ProfileForm({ profile }) {
             name="name"
             value={formdata.name}
             onChange={handleChange}
+            placeholder="Enter your Business name"
+            required
           />
         </div>
 
         <div className="form-group">
           <label htmlFor="industry">Industry</label>
-          <input
-            id="industry"
-            name="industry"
-            value={formdata.industry}
-            onChange={handleChange}
-          />
+          <select name="industry" id="industry" value={formdata.industry} onChange={handleChange} required>
+            <option value="" disabled>Select industry</option>
+            {['restaurant', 'cafe', 'hotel', 'catering',
+              'event venue', 'wedding', 'exhibition & conference',
+              'retail', 'supermarket', 'other'
+            ].map(industry => (
+              <option key={industry} value={industry}>{industry}</option>
+            ))}
+          </select>
+
         </div>
 
         <div className="form-group">
@@ -77,6 +120,8 @@ function ProfileForm({ profile }) {
             name="imageURL"
             value={formdata.imageURL}
             onChange={handleChange}
+            placeholder="https://example.com/photo.jpg"
+            required
           />
         </div>
 
@@ -87,6 +132,7 @@ function ProfileForm({ profile }) {
             name="websiteURL"
             value={formdata.websiteURL}
             onChange={handleChange}
+            placeholder="https://example.com"
           />
         </div>
 
@@ -97,11 +143,16 @@ function ProfileForm({ profile }) {
             name="description"
             value={formdata.description}
             onChange={handleChange}
+            placeholder="Tell people about your business"
+            required
           />
         </div>
 
-        <button type="button" disabled={sending}>
-          {sending ? 'Saving...' : 'Save'}
+        <button type="submit" disabled={sending}>
+          {sending
+            ? (profile ? 'Updating...' : 'Creating...')
+            : (profile ? 'Update' : 'Create')
+          }
         </button>
       </form>
     </div>
