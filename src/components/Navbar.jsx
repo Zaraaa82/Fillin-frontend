@@ -19,6 +19,9 @@ function Navbar() {
         <Link to='/shifts/create'>Create Shift</Link>
         </>
       )}
+      {user.role === 'worker' && (
+        <Link to='/applications/me'>My Applications</Link>
+      )}
       </>) :
       (<>
         <Link to='/sign-up'>Sign Up</Link>
