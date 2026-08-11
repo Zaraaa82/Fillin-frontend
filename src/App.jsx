@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { getCurrentUser, logout } from "./services/authService";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
+import ShiftsPage from "./pages/shifts/ShiftsPage";
+import ShiftDetailsPage from "./pages/shifts/ShiftDetailsPage";
 function App() {
   return (
     <div>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/shifts" element={<ShiftsPage />} />
+        <Route path="/shifts/:shiftId" element={<ShiftDetailsPage />} />
       </Routes>
     </div>
   );

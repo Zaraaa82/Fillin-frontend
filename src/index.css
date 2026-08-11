@@ -2,7 +2,8 @@
     color: red
 }
 
-nav a{
+
+nav a, nav button{
     margin-right: 10px
 }
 
