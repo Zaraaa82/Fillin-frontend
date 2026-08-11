@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getCurrentUser, logout } from "./services/authService";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import BusinessRoute from "./guards/BusinessRoute";
+import WorkerRoute from "./guards/WorkerRoute";
 import { useAuth } from "./context/AuthContext";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ProfileFormPage from "./pages/profile/ProfileFormPage";
@@ -23,6 +24,8 @@ import EditShiftPage from "./pages/business/EditShiftPage";
 import BusinessDashboardPage from "./pages/business/BusinessDashboardPage";
 import BusinessShiftsPage from "./pages/business/BusinessShiftsPage";
 import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
+import WorkerApplicationsPage from "./pages/worker/WorkerApplicationsPage";
+import ApplicationDetailsPage from "./pages/applications/ApplicationDetailsPage";
 function App() {
   return (
     <div>
@@ -46,6 +49,8 @@ function App() {
         <Route path="/shifts/:shiftId/applications" element={<BusinessRoute><ShiftApplicationsPage /></BusinessRoute>} />
         <Route path="/business/dashboard" element={<BusinessRoute><BusinessDashboardPage /></BusinessRoute>} />
         <Route path="/business/shifts" element={<BusinessRoute><BusinessShiftsPage /></BusinessRoute>} />
+        <Route path="/applications/me" element={<WorkerRoute><WorkerApplicationsPage /></WorkerRoute>} />
+        <Route path="/applications/:applicationId" element={<ProtectedRoute><ApplicationDetailsPage /></ProtectedRoute>} />
       </Routes>
     </div>
   );

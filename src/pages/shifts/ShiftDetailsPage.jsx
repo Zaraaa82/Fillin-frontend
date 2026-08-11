@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { getShiftById, cancelShift } from '../../services/shiftService'
-import { applyToShift } from '../../services/applicationService'
+import { applyToShift, getMyApplications } from '../../services/applicationService'
 import { useParams, useNavigate } from 'react-router'
 import { Link } from 'react-router'
 import {useAuth} from '../../context/AuthContext'
@@ -13,6 +13,7 @@ function ShiftDetailsPage() {
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [hasApplied, setHasApplied] = useState(false);
 
     async function fetchShift() {
         setLoading(true);
@@ -24,6 +25,17 @@ function ShiftDetailsPage() {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function checkIfApplied() {
+        try {
+            const myApplications = await getMyApplications();
+            setHasApplied(myApplications.some((application) =>
+                application.shift._id === shiftId && application.status !== 'withdrawn'
+            ));
+        } catch (err) {
+            setHasApplied(false);
         }
     }
 
@@ -39,7 +51,7 @@ function ShiftDetailsPage() {
     async function handleApply() {
         try {
             await applyToShift(shiftId);
-            fetchShift();
+            navigate('/applications/me');
         } catch (err) {
             setError(err.message);
         }
@@ -47,7 +59,10 @@ function ShiftDetailsPage() {
 
     useEffect(() => {
         fetchShift();
-    }, [shiftId]);
+        if (user?.role === 'worker') {
+            checkIfApplied();
+        }
+    }, [shiftId, user]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -69,7 +84,7 @@ function ShiftDetailsPage() {
             <p>Start Date: {new Date(shift.startTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>End Date: {new Date(shift.endTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>Location: {shift.location}</p>
-            {user?.role === 'worker' && (
+            {user?.role === 'worker' && !hasApplied && (
                 <button onClick={handleApply}>Apply</button>
             )}
             {user?.role === 'business' && user._id === shift.postedBy?.owner && (
