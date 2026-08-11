@@ -25,7 +25,7 @@ import BusinessDashboardPage from "./pages/business/BusinessDashboardPage";
 import BusinessShiftsPage from "./pages/business/BusinessShiftsPage";
 import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
 import WorkerApplicationsPage from "./pages/worker/WorkerApplicationsPage";
-import ApplicationDetailsPage from "./pages/applications/ApplicationDetailsPage";
+// import ApplicationDetailsPage from "./pages/applications/ApplicationDetailsPage";
 function App() {
   return (
     <div>
@@ -50,7 +50,7 @@ function App() {
         <Route path="/business/dashboard" element={<BusinessRoute><BusinessDashboardPage /></BusinessRoute>} />
         <Route path="/business/shifts" element={<BusinessRoute><BusinessShiftsPage /></BusinessRoute>} />
         <Route path="/applications/me" element={<WorkerRoute><WorkerApplicationsPage /></WorkerRoute>} />
-        <Route path="/applications/:applicationId" element={<ProtectedRoute><ApplicationDetailsPage /></ProtectedRoute>} />
+        {/* <Route path="/applications/:applicationId" element={<ProtectedRoute><ApplicationDetailsPage /></ProtectedRoute>} /> */}
       </Routes>
     </div>
   );
