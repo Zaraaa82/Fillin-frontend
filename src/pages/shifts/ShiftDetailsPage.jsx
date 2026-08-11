@@ -14,6 +14,7 @@ function ShiftDetailsPage() {
     const { user } = useAuth();
     const navigate = useNavigate();
     const [hasApplied, setHasApplied] = useState(false);
+    const [hasConflict, setHasConflict] = useState(false);
 
     async function fetchShift() {
         setLoading(true);
@@ -21,6 +22,9 @@ function ShiftDetailsPage() {
             const response = await getShiftById(shiftId);
             setShift(response);
 
+            if (user?.role === 'worker') {
+                await checkApplicationState(response);
+            }
         } catch (err) {
             setError(err.message);
         } finally {
@@ -28,14 +32,21 @@ function ShiftDetailsPage() {
         }
     }
 
-    async function checkIfApplied() {
+    async function checkApplicationState(currentShift) {
         try {
             const myApplications = await getMyApplications();
             setHasApplied(myApplications.some((application) =>
                 application.shift._id === shiftId && application.status !== 'withdrawn'
             ));
+            setHasConflict(myApplications.some((application) =>
+                application.status === 'accepted' &&
+                application.shift._id !== shiftId &&
+                new Date(currentShift.startTime) < new Date(application.shift.endTime) &&
+                new Date(currentShift.endTime) > new Date(application.shift.startTime)
+            ));
         } catch (err) {
             setHasApplied(false);
+            setHasConflict(false);
         }
     }
 
@@ -59,9 +70,6 @@ function ShiftDetailsPage() {
 
     useEffect(() => {
         fetchShift();
-        if (user?.role === 'worker') {
-            checkIfApplied();
-        }
     }, [shiftId, user]);
 
     if (error) {
@@ -84,8 +92,17 @@ function ShiftDetailsPage() {
             <p>Start Date: {new Date(shift.startTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>End Date: {new Date(shift.endTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>Location: {shift.location}</p>
-            {user?.role === 'worker' && !hasApplied && (
+            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots > 0 && (
                 <button onClick={handleApply}>Apply</button>
+            )}
+            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots === 0 && (
+                <p>This shift is full.</p>
+            )}
+            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status !== 'open' && (
+                <p>This shift is no longer accepting applications.</p>
+            )}
+            {user?.role === 'worker' && !hasApplied && hasConflict && (
+                <p>This shift conflicts with a shift you've already been accepted for.</p>
             )}
             {user?.role === 'business' && user._id === shift.postedBy?.owner && (
                 <>
