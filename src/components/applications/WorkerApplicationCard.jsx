@@ -37,6 +37,14 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
         <p><strong>Pay:</strong> {shift.payAmount} BHD</p>
       </div>
 
+      {status === 'rejected' && application.rejectionReason && (
+        <p className="application-rejection-reason"><strong>Rejection reason:</strong> {application.rejectionReason}</p>
+      )}
+
+      {status === 'accepted' && application.businessMessage && (
+        <p className="application-business-message"><strong>Message from business:</strong> {application.businessMessage}</p>
+      )}
+
       <div className="application-card-actions">
         <button  onClick={() => navigate(`/shifts/${shift._id}`)}>View Shift</button>
 

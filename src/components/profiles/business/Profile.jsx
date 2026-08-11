@@ -26,7 +26,7 @@ export function Profile({ profile }) {
       return <div>No business profile found.</div>
     }
     const ownerId = profile.owner._id;
-    const isOwner = user?._id.toString() === ownerId.toString();
+    const isOwner = user?._id?.toString() === ownerId.toString();
     const status = isOwner? user?.status : profile.owner.status;
     const email = isOwner? user.email : profile.owner.email;
     const phoneNumber = isOwner? user.phoneNumber : profile.owner.phoneNumber;

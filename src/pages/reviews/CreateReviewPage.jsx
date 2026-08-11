@@ -45,7 +45,7 @@ function CreateReviewPage() {
 
     async function handleSubmit({ rating, comment }) {
         await createReview(applicationId, { rating, comment });
-        navigate(`/applications/${applicationId}`);
+        navigate(user?.role === 'business' ? `/shifts/${application.shift._id}/applications` : '/applications/me');
     }
 
     return (
