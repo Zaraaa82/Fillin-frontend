@@ -1,13 +1,18 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { getShiftById } from '../../services/shiftService'
-import { useParams } from 'react-router'
+import { getShiftById, cancelShift } from '../../services/shiftService'
+import { applyToShift } from '../../services/applicationService'
+import { useParams, useNavigate } from 'react-router'
+import { Link } from 'react-router'
+import {useAuth} from '../../context/AuthContext'
 
 function ShiftDetailsPage() {
     const [shift, setShift] = useState();
     const [error, setError] = useState("");
     const { shiftId } = useParams();
     const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     async function fetchShift() {
         setLoading(true);
@@ -19,6 +24,24 @@ function ShiftDetailsPage() {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleDelete() {
+        try {
+            await cancelShift(shiftId);
+            navigate('/shifts');
+        } catch (err) {
+            setError(err.message);
+        }
+    }
+
+    async function handleApply() {
+        try {
+            await applyToShift(shiftId);
+            fetchShift();
+        } catch (err) {
+            setError(err.message);
         }
     }
 
@@ -46,6 +69,16 @@ function ShiftDetailsPage() {
             <p>Start Date: {new Date(shift.startTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>End Date: {new Date(shift.endTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>Location: {shift.location}</p>
+            {user?.role === 'worker' && (
+                <button onClick={handleApply}>Apply</button>
+            )}
+            {user?.role === 'business' && user._id === shift.postedBy?.owner && (
+                <>
+                <button onClick={handleDelete}>Delete Shift</button>
+                <button onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
+                <button onClick={() => navigate(`/shifts/${shiftId}/applications`)}>View Applicants</button>
+                </>
+            )}
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { getAllShifts } from '../../services/shiftService'
+import { getAllShifts, getShiftsByBusiness } from '../../services/shiftService'
 import ShiftCard from './ShiftCard'
 
-function ShiftList() {
+function ShiftList({ businessId }) {
   const [shifts, setShifts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ function ShiftList() {
     async function fetchShifts() {
         try{
             setLoading(true);
-            const response = await getAllShifts();
+            const response = businessId ? await getShiftsByBusiness(businessId) : await getAllShifts();
             setShifts(response);
         }catch(err){
             setError(err.message);
@@ -22,7 +22,7 @@ function ShiftList() {
 
   useEffect(() => {
     fetchShifts();
-  }, []);
+  }, [businessId]);
 
   if (error) {
     return <div>Error: {error}</div>;
