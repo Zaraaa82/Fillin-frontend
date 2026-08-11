@@ -4,12 +4,11 @@ import { useAuth } from "../context/AuthContext";
 function ProtectedRoute({ children }) {
     const {loading, user} = useAuth()
 
-
+    
     if(loading) return <p>Loading...</p>
 
-    if (user?.isProfileComplete) {
-        // Update this route later
-        return <Navigate to="/" />;
+    if (!user?.isProfileComplete) {
+        return <Navigate to="/profile/form" />;
     }
 
 

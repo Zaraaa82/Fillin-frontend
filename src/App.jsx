@@ -10,6 +10,12 @@ import { getCurrentUser, logout } from "./services/authService";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import BusinessRoute from "./guards/BusinessRoute";
 import { useAuth } from "./context/AuthContext";
+import ProfilePage from "./pages/profile/ProfilePage";
+import ProfileFormPage from "./pages/profile/ProfileFormPage";
+import WorkerDetailsPage from './pages/profile/WorkerDetailsPage'
+import BusinessDetailsPage from './pages/profile/BusinessDetailsPage'
+import ProfileCompleteRoute from './guards/ProfileCompleteRoute'
+
 import ShiftsPage from "./pages/shifts/ShiftsPage";
 import ShiftDetailsPage from "./pages/shifts/ShiftDetailsPage";
 import CreateShiftPage from "./pages/business/CreateShiftPage";
@@ -26,6 +32,13 @@ function App() {
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/profile/me" element={<ProtectedRoute><ProfileCompleteRoute> <ProfilePage /></ProfileCompleteRoute></ProtectedRoute>} />
+
+        {/* Remember to direct the user to this route when he signs in */}
+        <Route path="/profile/form" element={<ProtectedRoute><ProfileFormPage/></ProtectedRoute>} />
+
+        <Route path="/profile/worker/:id" element={<ProtectedRoute><WorkerDetailsPage/></ProtectedRoute>} />
+        <Route path="/profile/business/:id" element={<BusinessDetailsPage/>} />
         <Route path="/shifts" element={<ShiftsPage />} />
         <Route path="/shifts/:shiftId" element={<ShiftDetailsPage />} />
         <Route path="/shifts/create" element={<BusinessRoute><CreateShiftPage /></BusinessRoute>} />
