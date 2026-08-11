@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router'
 import { withdrawApplication, acceptApplication,rejectApplication,cancelAssignment,updateAttendance} from '../../services/applicationService'
 
 function ApplicationActions({ application, viewAs, onUpdate }) {
@@ -77,6 +78,10 @@ function ApplicationActions({ application, viewAs, onUpdate }) {
                         Mark Missed
                     </button>
                 </>
+            )}
+
+            {application.status === 'completed' && application.attendanceStatus === 'attended' && (
+                <Link to={`/applications/${application._id}/review`}>Leave a Review</Link>
             )}
         </div>
     )

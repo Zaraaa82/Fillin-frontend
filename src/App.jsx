@@ -21,11 +21,11 @@ import ShiftsPage from "./pages/shifts/ShiftsPage";
 import ShiftDetailsPage from "./pages/shifts/ShiftDetailsPage";
 import CreateShiftPage from "./pages/business/CreateShiftPage";
 import EditShiftPage from "./pages/business/EditShiftPage";
-import BusinessDashboardPage from "./pages/business/BusinessDashboardPage";
 import BusinessShiftsPage from "./pages/business/BusinessShiftsPage";
 import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
 import WorkerApplicationsPage from "./pages/worker/WorkerApplicationsPage";
 import ApplicationDetailsPage from "./pages/applications/ApplicationDetailsPage";
+import CreateReviewPage from "./pages/reviews/CreateReviewPage";
 function App() {
   return (
     <div>
@@ -47,10 +47,10 @@ function App() {
         <Route path="/shifts/create" element={<BusinessRoute><CreateShiftPage /></BusinessRoute>} />
         <Route path="/shifts/:shiftId/edit" element={<BusinessRoute><EditShiftPage /></BusinessRoute>} />
         <Route path="/shifts/:shiftId/applications" element={<BusinessRoute><ShiftApplicationsPage /></BusinessRoute>} />
-        <Route path="/business/dashboard" element={<BusinessRoute><BusinessDashboardPage /></BusinessRoute>} />
         <Route path="/business/shifts" element={<BusinessRoute><BusinessShiftsPage /></BusinessRoute>} />
         <Route path="/applications/me" element={<WorkerRoute><WorkerApplicationsPage /></WorkerRoute>} />
         <Route path="/applications/:applicationId" element={<ProtectedRoute><ApplicationDetailsPage /></ProtectedRoute>} />
+        <Route path="/applications/:applicationId/review" element={<ProtectedRoute><CreateReviewPage /></ProtectedRoute>} />
       </Routes>
     </div>
   );
