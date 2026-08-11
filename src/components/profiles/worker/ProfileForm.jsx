@@ -96,10 +96,13 @@ export function ProfileForm({ profile }) {
     }
 
     if(loading){
-    return <p>Loading...</p>
+        return <p>Loading...</p>
     }
 
-    {error && <p>Error: {error}</p>}
+    if(error){
+        return <p>Error: {error}</p>
+    }
+
 
   return (
     <div>
@@ -113,6 +116,7 @@ export function ProfileForm({ profile }) {
                     value={formdata.fullName}
                     onChange={handleInputChange}
                     maxLength={100}
+                    placeholder='Enter your full name'
                     required
                 />
             </div>
@@ -125,6 +129,7 @@ export function ProfileForm({ profile }) {
                     name='imageURL'
                     value={formdata.imageURL}
                     onChange={handleInputChange}
+                    placeholder='https://example.com/photo.jpg'
                 />
             </div>
 
@@ -135,6 +140,7 @@ export function ProfileForm({ profile }) {
                     name='bio'
                     value={formdata.bio}
                     onChange={handleInputChange}
+                    placeholder='Write a short bio about your experience'
                 />
             </div>            
 
@@ -167,10 +173,11 @@ export function ProfileForm({ profile }) {
                     name='location'
                     value={formdata.location}
                     onChange={handleInputChange}
+                    placeholder='City or neighborhood'
                 />
             </div>
 
-            <button disabled={sending}>
+            <button type='submit' disabled={sending}>
                 {sending
                     ? (profile ? 'Updating...' : 'Creating...')
                     : (profile ? 'Update' : 'Create')}

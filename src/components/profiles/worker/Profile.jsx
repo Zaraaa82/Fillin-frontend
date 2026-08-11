@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router';
 function Profile({ profile }) {
     const {user} = useAuth();
     const navigate = useNavigate();
+    if (!profile) {
+      return <div>No Worker profile found.</div>
+    }
 
 
     const ownerId = profile.owner?._id ?? profile.owner;

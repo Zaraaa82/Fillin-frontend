@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 
 
 const SignInForm = ({}) => {
-  const {setUser} = useAuth()
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -18,24 +18,22 @@ const SignInForm = ({}) => {
 
   function handleChange(event){
     setFormData({ ...formData, [event.target.name]: event.target.value });
-
-
   }
 
-  async function handleSubmit(event){
-    event.preventDefault();
-
-  }
   async function handleSubmit(event){
     event.preventDefault();
     try {
       const signedInUser = await signIn(formData);
 
       setUser(signedInUser);
-      navigate('/dashboard');
+      if(signedInUser.isProfileComplete){
+        navigate('/dashboard');
+      } else {
+        navigate('/profile/me');
+      }
     } catch (err) {
       console.log(`Error: ${err}`)
-      setError(err?.response?.data?.message);
+      setError(err?.response?.data?.message || err.message);
     }
   };
 
