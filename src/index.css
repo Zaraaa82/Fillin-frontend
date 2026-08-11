@@ -5,3 +5,48 @@
 nav a{
     margin-right: 10px
 }
+
+
+/*from here*/
+.role-toggle {
+    position: relative;
+    display: inline-flex;
+    background: #e5e7eb;
+    border-radius: 999px;
+    padding: 4px;
+    width: 260px;
+}
+
+.role-toggle-indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease;
+}
+
+.role-toggle-indicator.business {
+    transform: translateX(100%);
+}
+
+.role-toggle button {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    border-radius: 999px;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.role-toggle button.active {
+    color: #111827;
+}
+/*till here need change*/

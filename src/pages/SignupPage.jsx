@@ -9,19 +9,27 @@ function Signup() {
     username: "",
     password: "",
     passwordConf: "",
+    email: "",
+    phoneNumber: "",
+    role: "worker",
   });
-  const [ submitting, setSubmitting ] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  const { username, password, passwordConf } = formData;
+  const { username, password, passwordConf, email, phoneNumber, role } = formData;
 
-  function handleChange(event){
+  function handleChange(event) {
     setError("");
     setFormData({ ...formData, [event.target.name]: event.target.value });
 
   }
 
+  function handleRoleSelect(newRole) {
+    setError("");
+    setFormData({ ...formData, role: newRole });
+  }
 
-  async function handleSubmit(event){
+
+  async function handleSubmit(event) {
     event.preventDefault();
     try {
       setSubmitting(true)
@@ -33,7 +41,7 @@ function Signup() {
     }
   }
 
-  function isFormInvalid(){
+  function isFormInvalid() {
     return !(username && password && password === passwordConf);
   };
 
@@ -42,6 +50,23 @@ function Signup() {
       <h1>Sign Up</h1>
       <p className="error">{error}</p>
       <form onSubmit={handleSubmit}>
+        <div className="role-toggle">
+          <span className={`role-toggle-indicator ${role}`}></span>
+          <button
+            type="button"
+            className={role === "worker" ? "active" : ""}
+            onClick={() => handleRoleSelect("worker")}
+          >
+            Worker
+          </button>
+          <button
+            type="button"
+            className={role === "business" ? "active" : ""}
+            onClick={() => handleRoleSelect("business")}
+          >
+            Business
+          </button>
+        </div>
         <div>
           <label htmlFor="username">Username:</label>
           <input
@@ -71,6 +96,28 @@ function Signup() {
             id="confirm"
             value={passwordConf}
             name="passwordConf"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            name="email"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="phoneNumber">Phone Number:</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            value={phoneNumber}
+            name="phoneNumber"
             onChange={handleChange}
             required
           />
