@@ -1,18 +1,27 @@
 import React from 'react'
-import { getShiftApplications } from '../../services/applicationService'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router';
-import ApplicationList from '../../components/applications/ApplicationList'
+import {
+  getShiftApplications,
+  acceptApplication,
+  rejectApplication,
+  cancelAssignment,
+} from '../../services/applicationService';
+import BusinessApplicationList from '../../components/applications/BusinessApplicationList';
+
+
 
 function ShiftApplicationsPage() {
     const { shiftId } = useParams();
+
     const [applications, setApplications] = useState([]);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     async function fetchApplications() {
-        setLoading(true);
         try {
+            setLoading(true);
+            setError(null);
             const response = await getShiftApplications(shiftId);
             setApplications(response);
         } catch (err) {
@@ -26,18 +35,65 @@ function ShiftApplicationsPage() {
         fetchApplications();
     }, [shiftId]);
 
-    if (error) {
-        return <div>Error: {error}</div>;
+    async function handleAccept(applicationId) {
+        try {
+            setError(null);
+            await acceptApplication(
+                applicationId,
+                { businessMessage:'Your application has been accepted. Please review the shift details and arrive on time.'}
+            );
+            await fetchApplications();
+        
+        } catch (err) {
+            setError(err.message);
+        }
     }
+
+  async function handleReject(applicationId) {
+        try {
+            setError(null);
+            await rejectApplication(
+                applicationId,
+                {rejectionReason: 'Your application was not selected for this shift.'}
+            );
+            await fetchApplications();
+        
+        } catch (err) {
+            setError(err.message);
+        }
+    }
+
+  async function handleCancel(applicationId) {
+        try {
+            setError(null);
+            await cancelAssignment(applicationId);
+            await fetchApplications();
+        } catch (err) {
+            setError(err.message);
+        }
+    }
+
 
     if (loading) {
         return <div>Loading...</div>;
     }
-
+    
     return (
         <div>
             <h1>Shift Applications</h1>
-            <ApplicationList applications={applications} viewAs='business' onUpdate={fetchApplications} />
+            {error && (<p className="error-message">Error: {error}</p>)}
+
+            {applications.length === 0 ? 
+                (
+                    <p>No workers have applied to this shift.</p>
+                ) : (
+                    <BusinessApplicationList
+                        applications={applications}
+                        onAccept={handleAccept}
+                        onReject={handleReject}
+                        onCancel={handleCancel}
+                    />
+                )}
         </div>
     )
 }
