@@ -1,11 +1,24 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { createShift } from '../../services/shiftService'
+import { createShift, updateShift, getShiftById } from '../../services/shiftService'
 import { getSkills } from '../../services/skillService'
 
-function ShiftForm() {
+function toDateInputValue(dateString) {
+    if (!dateString) return '';
+    return new Date(dateString).toISOString().slice(0, 10);
+}
+
+function toDateTimeInputValue(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().slice(0, 16);
+}
+
+function ShiftForm({ shiftId }) {
     const navigate = useNavigate();
+    const isEditMode = Boolean(shiftId);
     const [skills, setSkills] = useState([]);
     const [error, setError] = useState('');
 
@@ -33,6 +46,30 @@ function ShiftForm() {
         fetchSkills();
     }, []);
 
+    useEffect(() => {
+        if (!isEditMode) return;
+
+        async function fetchShift() {
+            try {
+                const shift = await getShiftById(shiftId);
+                setFormData({
+                    title: shift.title,
+                    description: shift.description,
+                    requiredSkills: shift.requiredSkills.map((skill) => skill._id),
+                    payAmount: shift.payAmount,
+                    capacity: shift.capacity,
+                    applicationDeadline: toDateInputValue(shift.applicationDeadline),
+                    startTime: toDateTimeInputValue(shift.startTime),
+                    endTime: toDateTimeInputValue(shift.endTime),
+                    location: shift.location
+                });
+            } catch (err) {
+                setError(err.message);
+            }
+        }
+        fetchShift();
+    }, [shiftId, isEditMode]);
+
     function handleChange(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value })
     }
@@ -46,9 +83,11 @@ function ShiftForm() {
         event.preventDefault();
         setError('');
         try {
-            const createdShift = await createShift(formData);
-            if (createdShift) {
-                navigate(`/shifts/${createdShift._id}`);
+            const savedShift = isEditMode
+                ? await updateShift(shiftId, formData)
+                : await createShift(formData);
+            if (savedShift) {
+                navigate(`/shifts/${savedShift._id}`);
             }
         } catch (err) {
             setError(err.message);
@@ -57,7 +96,6 @@ function ShiftForm() {
 
     return (
         <div>
-            <h1>Create Shift</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor='title'>Title</label>
                 <input type='text' required name='title' value={formData.title} onChange={handleChange} id='title' />
@@ -90,7 +128,7 @@ function ShiftForm() {
                 <label htmlFor='location'>Location</label>
                 <input type='text' required name='location' value={formData.location} onChange={handleChange} id='location' />
 
-                <button type="submit">Create Shift</button>
+                <button type="submit">{isEditMode ? 'Save Changes' : 'Create Shift'}</button>
 
             </form>
         </div>
