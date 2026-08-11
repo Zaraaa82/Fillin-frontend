@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { getMyApplications } from '../../services/applicationService'
-import ApplicationList from '../../components/applications/ApplicationList'
-
+import { getMyApplications, withdrawApplication, applyToShift, cancelAssignment} from '../../services/applicationService';
+import WorkerApplicationList from '../../components/applications/WorkerApplicationList';
 function WorkerApplicationsPage() {
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState('');
@@ -23,8 +22,34 @@ function WorkerApplicationsPage() {
         fetchApplications();
     }, []);
 
-    if (error) {
-        return <div>Error: {error}</div>;
+    async function handleWithdraw(applicationId){
+        try{
+            setError(null);
+            await withdrawApplication(applicationId);
+            await fetchApplications();
+        }catch(err){
+            setError(err.message);
+        }
+    }
+
+    async function handleReapply(shiftId){
+        try{
+            setError(null);
+            await applyToShift(shiftId);
+            await fetchApplications();
+        }catch(err){
+            setError(err.message);
+        }
+    }
+
+    async function handleCancel(applicationId){
+        try{
+            setError(null);
+            await cancelAssignment(applicationId);
+            await fetchApplications();
+        }catch(err){
+            setError(err.message);
+        }
     }
 
     if (loading) {
@@ -32,10 +57,22 @@ function WorkerApplicationsPage() {
     }
 
     return (
-        <div>
+        <main className="applications-page">
             <h1>My Applications</h1>
-            <ApplicationList applications={applications} viewAs='worker' onUpdate={fetchApplications} />
-        </div>
+            {error && (<p className="error-message">Error: {error}</p>)}
+            
+            {applications.length === 0? 
+                <p>You have not applied to any shifts yet.</p>
+            : (
+                <WorkerApplicationList
+                    applications={applications}
+                    onWithdraw={handleWithdraw}
+                    onReapply={handleReapply}
+                    onCancel={handleCancel}
+                />
+            )
+            }
+        </main>
     )
 }
 
