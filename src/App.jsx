@@ -7,7 +7,7 @@ import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
 import { getCurrentUser, logout } from "./services/authService";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./guards/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 function App() {
   return (
