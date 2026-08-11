@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
 import { getCurrentUser, logout } from "./services/authService";
 import ProtectedRoute from "./guards/ProtectedRoute";
+import BusinessRoute from "./guards/BusinessRoute";
 import { useAuth } from "./context/AuthContext";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ProfileFormPage from "./pages/profile/ProfileFormPage";
@@ -15,6 +16,13 @@ import WorkerDetailsPage from './pages/profile/WorkerDetailsPage'
 import BusinessDetailsPage from './pages/profile/BusinessDetailsPage'
 import ProfileCompleteRoute from './guards/ProfileCompleteRoute'
 
+import ShiftsPage from "./pages/shifts/ShiftsPage";
+import ShiftDetailsPage from "./pages/shifts/ShiftDetailsPage";
+import CreateShiftPage from "./pages/business/CreateShiftPage";
+import EditShiftPage from "./pages/business/EditShiftPage";
+import BusinessDashboardPage from "./pages/business/BusinessDashboardPage";
+import BusinessShiftsPage from "./pages/business/BusinessShiftsPage";
+import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
 function App() {
   return (
     <div>
@@ -31,6 +39,13 @@ function App() {
 
         <Route path="/profile/worker/:id" element={<ProtectedRoute><WorkerDetailsPage/></ProtectedRoute>} />
         <Route path="/profile/business/:id" element={<BusinessDetailsPage/>} />
+        <Route path="/shifts" element={<ShiftsPage />} />
+        <Route path="/shifts/:shiftId" element={<ShiftDetailsPage />} />
+        <Route path="/shifts/create" element={<BusinessRoute><CreateShiftPage /></BusinessRoute>} />
+        <Route path="/shifts/:shiftId/edit" element={<BusinessRoute><EditShiftPage /></BusinessRoute>} />
+        <Route path="/shifts/:shiftId/applications" element={<BusinessRoute><ShiftApplicationsPage /></BusinessRoute>} />
+        <Route path="/business/dashboard" element={<BusinessRoute><BusinessDashboardPage /></BusinessRoute>} />
+        <Route path="/business/shifts" element={<BusinessRoute><BusinessShiftsPage /></BusinessRoute>} />
       </Routes>
     </div>
   );
