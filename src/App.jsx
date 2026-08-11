@@ -24,7 +24,6 @@ import EditShiftPage from "./pages/business/EditShiftPage";
 import BusinessShiftsPage from "./pages/business/BusinessShiftsPage";
 import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
 import WorkerApplicationsPage from "./pages/worker/WorkerApplicationsPage";
-import ApplicationDetailsPage from "./pages/applications/ApplicationDetailsPage";
 import CreateReviewPage from "./pages/reviews/CreateReviewPage";
 function App() {
   return (
@@ -49,7 +48,6 @@ function App() {
         <Route path="/shifts/:shiftId/applications" element={<BusinessRoute><ShiftApplicationsPage /></BusinessRoute>} />
         <Route path="/business/shifts" element={<BusinessRoute><BusinessShiftsPage /></BusinessRoute>} />
         <Route path="/applications/me" element={<WorkerRoute><WorkerApplicationsPage /></WorkerRoute>} />
-        <Route path="/applications/:applicationId" element={<ProtectedRoute><ApplicationDetailsPage /></ProtectedRoute>} />
         <Route path="/applications/:applicationId/review" element={<ProtectedRoute><CreateReviewPage /></ProtectedRoute>} />
       </Routes>
     </div>
