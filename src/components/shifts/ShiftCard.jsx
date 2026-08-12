@@ -26,7 +26,7 @@ function ShiftCard({ shift }) {
             </div>
 
             <div className='shift-footer'>
-                <span className='shift-pay'>${shift.payAmount.toFixed(2)}</span>
+                <span className='shift-pay'>BHD {shift.payAmount.toFixed(2)}</span>
                 <span className='shift-spots'>{shift.availableSpots} spots left</span>
             </div>
 
