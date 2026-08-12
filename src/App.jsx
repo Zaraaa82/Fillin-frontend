@@ -11,7 +11,7 @@ import WorkerRoute from "./guards/WorkerRoute";
 import ProfileCompleteRoute from './guards/ProfileCompleteRoute'
 
 import SignupPage from "./pages/SignupPage";
-import Homepage from "./pages/Homepage";
+import LandingPage from "./pages/LandingPage";
 import SignInPage from "./pages/SigninPage";
 // import Dashboard from "./pages/Dashboard";
 
@@ -30,16 +30,16 @@ import ShiftApplicationsPage from "./pages/business/ShiftApplicationsPage";
 import WorkerApplicationsPage from "./pages/worker/WorkerApplicationsPage";
 
 import CreateReviewPage from "./pages/reviews/CreateReviewPage";
+import GuestRoute from "./guards/GuestRoute";
 
 function App() {
   return (
     <div>
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<GuestRoute><LandingPage /></GuestRoute>} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
-        {/* <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
 
         <Route path="/profile/me" element={<ProtectedRoute><ProfileCompleteRoute> <ProfilePage /></ProfileCompleteRoute></ProtectedRoute>} />
         <Route path="/profile/form" element={<ProtectedRoute><ProfileFormPage/></ProtectedRoute>} />
