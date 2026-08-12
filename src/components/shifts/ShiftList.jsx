@@ -11,6 +11,7 @@ function ShiftList({ businessId }) {
     async function fetchShifts() {
         try{
             setLoading(true);
+            setError("");
             const response = businessId ? await getShiftsByBusiness(businessId) : await getAllShifts();
             setShifts(response);
         }catch(err){
@@ -30,6 +31,10 @@ function ShiftList({ businessId }) {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!shifts.length) {
+    return <p>No shifts found.</p>;
   }
 
   return (

@@ -79,6 +79,8 @@ function ShiftDetailsPage() {
     if (loading) {
         return <div>Loading...</div>;
     }
+    const ownerId = shift.postedBy?.owner?._id ?? shift.postedBy?.owner;
+    const isShiftOwner = user?._id?.toString() === ownerId?.toString();
 
     return (
         <div>
@@ -86,15 +88,19 @@ function ShiftDetailsPage() {
             <p>{shift.description}</p>
             <p>Status: {shift.status}</p>
             <p>Required Skills: {shift.requiredSkills.map((skill) => skill.name).join(', ')}</p>
-            <p>Pay Rate: ${shift.payAmount.toFixed(2)}</p>
+            <p>Pay Rate: {shift.payAmount.toFixed(2)} BHD</p>
             <p>Available Spots: {shift.availableSpots}</p>
             <p>Application Deadline: {new Date(shift.applicationDeadline).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>Start Date: {new Date(shift.startTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>End Date: {new Date(shift.endTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
             <p>Location: {shift.location}</p>
-            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots > 0 && (
+            {user?.role === 'worker' && user.status === 'active' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots > 0 && (
                 <button onClick={handleApply}>Apply</button>
             )}
+            {!user && shift.status === 'open' && shift.availableSpots > 0 && (
+                <button type="button" onClick={() => navigate('/sign-in')}>Sign in to apply</button>
+            )}
+
             {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots === 0 && (
                 <p>This shift is full.</p>
             )}
@@ -104,9 +110,9 @@ function ShiftDetailsPage() {
             {user?.role === 'worker' && !hasApplied && hasConflict && (
                 <p>This shift conflicts with a shift you've already been accepted for.</p>
             )}
-            {user?.role === 'business' && user._id === shift.postedBy?.owner && (
+            {user?.role === 'business' && isShiftOwner && (
                 <>
-                <button onClick={handleDelete}>Delete Shift</button>
+                <button onClick={handleDelete}>Cancel Shift</button>
                 <button onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
                 <button onClick={() => navigate(`/shifts/${shiftId}/applications`)}>View Applicants</button>
                 </>

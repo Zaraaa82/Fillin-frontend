@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
-function ProtectedRoute({ children }) {
+function ProfileCompleteRoute({ children }) {
     const {loading, user} = useAuth()
 
     
@@ -16,4 +16,4 @@ function ProtectedRoute({ children }) {
 }
 
 
-export default ProtectedRoute;
+export default ProfileCompleteRoute;
