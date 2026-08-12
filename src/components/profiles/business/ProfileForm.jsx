@@ -82,8 +82,7 @@ function ProfileForm({ profile }) {
 
 
   return (
-    <div className="business-profile-form">
-      {error && <p className="error-message">Error: {error}</p>}
+    <div className="form-card">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
@@ -149,7 +148,7 @@ function ProfileForm({ profile }) {
           />
         </div>
 
-        <button type="submit" disabled={sending}>
+        <button type="submit" className="btn btn-primary btn-block" disabled={sending}>
           {sending
             ? (profile ? 'Updating...' : 'Creating...')
             : (profile ? 'Update' : 'Create')

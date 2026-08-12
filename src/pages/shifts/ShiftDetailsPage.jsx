@@ -4,6 +4,7 @@ import { getShiftById, cancelShift } from '../../services/shiftService'
 import { applyToShift, getMyApplications } from '../../services/applicationService'
 import { useParams, useNavigate } from 'react-router'
 import { Link } from 'react-router'
+import { MapPin, Calendar, Clock, Wallet, Users, Puzzle } from 'lucide-react'
 import {useAuth} from '../../context/AuthContext'
 
 function ShiftDetailsPage() {
@@ -81,6 +82,14 @@ function ShiftDetailsPage() {
     }
     const ownerId = shift.postedBy?.owner?._id ?? shift.postedBy?.owner;
     const isShiftOwner = user?._id?.toString() === ownerId?.toString();
+
+    const isFull = shift.status === 'open' && shift.availableSpots === 0;
+    const statusClass = shift.status !== 'open'
+        ? 'shift-status-closed'
+        : isFull ? 'shift-status-full' : 'shift-status-open';
+    const statusLabel = shift.status !== 'open' ? shift.status : (isFull ? 'Full' : 'Open');
+
+    const formatDate = (date) => new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     return (
         <div>

@@ -40,17 +40,10 @@ function ProfilePage() {
         return <p>Error: {error}</p>
     }
   return (
-    <div>
-        <h1>Profile Page</h1>
-        {
-            user.role === 'worker' ? 
-            <WorkerProfile profile={profile}/>
-        :
-            <BusinessProfile profile={profile}/>
-        
-        }
-
-    </div>
+    user.role === 'worker' ?
+      <WorkerProfile profile={profile}/>
+    :
+      <BusinessProfile profile={profile}/>
   )
 }
 

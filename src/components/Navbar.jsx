@@ -1,34 +1,55 @@
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
+import { Puzzle, LogOut } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+
+function navLinkClass({ isActive }) {
+  return isActive ? 'nav-link active' : 'nav-link'
+}
 
 function Navbar() {
   const { logout, user} = useAuth()
+  const initial = user?.username?.[0]?.toUpperCase() ?? '?'
+
   return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/shifts'>All Shifts</Link>
-      {user
-      ?
-      (<>
-        <Link to='/dashboard'>Dashboard</Link>
-        <Link to='/profile/me'>Profile</Link>
+    <nav className='navbar'>
+      <Link to='/' className='navbar-brand'>
+        <Puzzle size={22} />
+        Fillin
+      </Link>
 
+      <div className='navbar-links'>
+        <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
+        {user && (
+          <>
+            <NavLink to='/dashboard' className={navLinkClass}>Dashboard</NavLink>
+            <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
+            {user.role === 'business' && (
+              <>
+                <NavLink to='/business/shifts' className={navLinkClass}>My Shifts</NavLink>
+                <NavLink to='/shifts/create' className={navLinkClass}>Create Shift</NavLink>
+              </>
+            )}
+            {user.role === 'worker' && (
+              <NavLink to='/applications/me' className={navLinkClass}>My Applications</NavLink>
+            )}
+          </>
+        )}
+      </div>
 
-      <button onClick={logout}>Sign Out</button>
-      {user.role === 'business' && (
-        <>
-        <Link to='/business/shifts'>My Shifts</Link>
-        <Link to='/shifts/create'>Create Shift</Link>
-        </>
-      )}
-      {user.role === 'worker' && (
-        <Link to='/applications/me'>My Applications</Link>
-      )}
-      </>) :
-      (<>
-        <Link to='/sign-up'>Sign Up</Link>
-        <Link to='/sign-in'>Sign In</Link>
-      </>)}
+      <div className='navbar-actions'>
+        {user ? (
+          <>
+            <span className='navbar-avatar'>{initial}</span>
+            <span className='navbar-username'>{user.username}</span>
+            <button onClick={logout} className='btn'><LogOut size={16} />Sign Out</button>
+          </>
+        ) : (
+          <>
+            <Link to='/sign-in' className='btn'>Sign In</Link>
+            <Link to='/sign-up' className='btn'>Sign Up</Link>
+          </>
+        )}
+      </div>
     </nav>
   )
 }

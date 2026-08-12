@@ -49,10 +49,12 @@ function CreateReviewPage() {
     }
 
     return (
-        <div>
-            <h2>Review {revieweeName}</h2>
-            <p>Shift: {application.shift.title}</p>
-            <ReviewForm onSubmit={handleSubmit} />
+        <div className='page-container'>
+            <div className='form-card'>
+                <h2 className='auth-title'>Review {revieweeName}</h2>
+                <p className='review-context'>Shift: {application.shift.title}</p>
+                <ReviewForm onSubmit={handleSubmit} />
+            </div>
         </div>
     )
 }

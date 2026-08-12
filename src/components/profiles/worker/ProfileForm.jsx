@@ -176,7 +176,7 @@ export function ProfileForm({ profile }) {
                 />
             </div>
 
-            <button type='submit' disabled={sending}>
+            <button type='submit' className='btn btn-primary btn-block' disabled={sending}>
                 {sending
                     ? (profile ? 'Updating...' : 'Creating...')
                     : (profile ? 'Update' : 'Create')}

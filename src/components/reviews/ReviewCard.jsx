@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Star } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { updateReview, deleteReview } from '../../services/reviewService'
 import ReviewForm from './ReviewForm'
@@ -40,19 +41,27 @@ function ReviewCard({ review, onUpdate }) {
         )
     }
 
+    const initial = review.reviewer?.username?.[0]?.toUpperCase() ?? '?';
+
     return (
         <div className='review-card'>
             {error && <p className='error'>{error}</p>}
-            <p className='review-rating'>{review.rating} / 5</p>
+            <div className='review-card-header'>
+                <span className='review-avatar'>{initial}</span>
+                <div className='review-card-meta'>
+                    <span className='review-reviewer'>{review.reviewer?.username}</span>
+                    <span className='review-date'>
+                        {new Date(review.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    </span>
+                </div>
+                <span className='review-rating-badge'>{review.rating} <Star size={12} fill='currentColor' /></span>
+            </div>
             <p className='review-comment'>{review.comment}</p>
-            <p className='review-meta'>
-                {review.reviewer?.username} · {new Date(review.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-            </p>
 
             {isOwner && (
                 <div className='review-actions'>
-                    <button onClick={() => setEditing(true)}>Edit</button>
-                    <button onClick={handleDelete}>Delete</button>
+                    <button className='btn' onClick={() => setEditing(true)}>Edit</button>
+                    <button className='btn' onClick={handleDelete}>Delete</button>
                 </div>
             )}
         </div>

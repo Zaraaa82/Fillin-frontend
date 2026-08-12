@@ -18,7 +18,7 @@ function BusinessApplicationCard({
           <img src={worker.imageURL} alt={`${worker.fullName}'s profile`} className="worker-image"/>
 
           <div><h2>{worker.fullName}</h2>
-            <p>Applied for: {application.shift?.title}</p>
+            <p className='applied-for'>Applied for: {application.shift?.title}</p>
           </div>
         </div>
 
@@ -62,12 +62,12 @@ function BusinessApplicationCard({
       </div>
 
       <div className="application-card-actions">
-        <button type="button"  onClick={() => navigate(`/profile/worker/${worker._id}`)}>View profile</button>
+        <button type="button" className="btn" onClick={() => navigate(`/profile/worker/${worker._id}`)}>View profile</button>
 
         {status === 'pending' && (
           <>
-            <button type="button" className="accept-button" onClick={() => onAccept(application._id)}>Accept</button>
-            <button type="button" className="reject-button" onClick={() => onReject(application._id)}>Reject</button>
+            <button type="button" className="btn btn-primary" onClick={() => onAccept(application._id)}>Accept</button>
+            <button type="button" className="btn btn-danger" onClick={() => onReject(application._id)}>Reject</button>
           </>
         )}
 

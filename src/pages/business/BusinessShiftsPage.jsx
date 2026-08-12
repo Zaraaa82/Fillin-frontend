@@ -28,8 +28,8 @@ function BusinessShiftsPage() {
   }
 
   return (
-    <div>
-      <h1>Business Shifts</h1>
+    <div className='page-container'>
+      <h1 className='page-title'>My Shifts</h1>
       <ShiftList businessId={businessProfile._id} />
     </div>
   )

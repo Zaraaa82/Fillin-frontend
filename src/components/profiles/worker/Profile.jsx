@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { MapPin, Briefcase, Star, CheckCircle, User, Puzzle, Phone, Mail, Eye, EyeOff, Pencil } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import { getWorkerReviews } from '../../../services/reviewService';
@@ -37,17 +38,22 @@ function Profile({ profile }) {
 
     const phoneNumber = isOwner? user.phoneNumber : profile.owner?.phoneNumber;
 
+    const canSeeContact = isOwner || user?.role === 'business';
+
   return (
     <main className="profile-page">
     <section className="profile-header">
         <section className="profile-info">
             
-            <img src={profile.imageURL} alt={`${profile.fullName}'s profile`} className='profile-photo'/>
+            <div className='profile-photo-wrap'>
+                <img src={profile.imageURL} alt={`${profile.fullName}'s profile`} className='profile-photo'/>
+                {status !== 'suspended' && <span className='profile-online-dot'></span>}
+            </div>
 
             <div className='profile-details'>
-                
+
                 <h1 className='profile-fullName'>{profile.fullName}</h1>
-                <p className='profile-location'>{profile.location}</p>
+                <p className='profile-location'><MapPin size={16} />{profile.location}</p>
                 { status && (<p className='profile-user-status'>{status}</p>)}
                 {isOwner && (
                     <>
@@ -61,7 +67,7 @@ function Profile({ profile }) {
                                 }
                             </p>
                         )}
-                        <button onClick={()=>navigate('/profile/form')} className='btn'>Edit Profile</button>
+                        <button onClick={()=>navigate('/profile/form')} className='btn'><Pencil size={16} />Edit Profile</button>
                     </>
                 )}
             
@@ -71,21 +77,21 @@ function Profile({ profile }) {
         <section className="profile-summary">
 
             <div className='profile-statistic'>
-                <span></span>
-                <span>{profile.completedShifts?? 0}</span>
-                <span>Completed Shifts</span>
+                <span className='profile-statistic-icon icon-blue'><Briefcase size={20} /></span>
+                <span className='profile-statistic-value'>{profile.completedShifts?? 0}</span>
+                <span className='profile-statistic-label'>Completed Shifts</span>
             </div>
 
             <div className='profile-statistic'>
-                <span></span>
-                <span>{profile.avgRating?? 0}/5</span>
-                <span>Average Rating</span>
+                <span className='profile-statistic-icon icon-amber'><Star size={20} /></span>
+                <span className='profile-statistic-value'>{profile.avgRating?? 0}/5</span>
+                <span className='profile-statistic-label'>Average Rating</span>
             </div>
 
             <div className='profile-statistic'>
-                <span></span>
-                <span>{profile.reliabilityPercentage?? 0}%</span>
-                <span>Reliability</span>
+                <span className='profile-statistic-icon icon-green'><CheckCircle size={20} /></span>
+                <span className='profile-statistic-value'>{profile.reliabilityPercentage?? 0}%</span>
+                <span className='profile-statistic-label'>Reliability</span>
             </div>
             
         </section>
@@ -94,11 +100,11 @@ function Profile({ profile }) {
     <div className="profile-layout">
         <div className="profile-main">
             <section className='profile-about'>
-                <h3>About</h3>
+                <div className='card-heading'><User size={18} /><h3>About</h3></div>
                 <p>{profile.bio}</p>
             </section>
             <section className='profile-skills'>
-                <h3>Skills</h3>
+                <div className='card-heading'><Puzzle size={18} /><h3>Skills</h3></div>
                 <div className='skills-container'>
                     {
                         profile.skills.map(skill => 
@@ -109,7 +115,7 @@ function Profile({ profile }) {
             </section>
 
             <section className='profile-reviews'>
-                <h3>Reviews</h3>
+                <div className='card-heading'><Star size={18} /><h3>Reviews</h3></div>
                 <ReviewList reviews={reviews} onUpdate={fetchReviews} />
             </section>
 
@@ -117,19 +123,51 @@ function Profile({ profile }) {
 
         <aside className="profile-sidebar">
             <section className='profile-contact-info'>
-                <h3>Contact Information</h3>
+                <div className='card-heading'><Phone size={18} /><h3>Contact Information</h3></div>
                 <div className='contact-container'>
-                    <span className='contact-label'>Email</span>
-                    <span className='contact-info'>{email}</span>
-                </div>
-                { 
-                    (user.role === 'business' || isOwner) && phoneNumber && (
-                        <div className='contact-container'>
-                            <span className='contact-label'>Phone</span>
-                            <span className='contact-info'>{phoneNumber}</span>
+                    <div className='contact-left'>
+                        <Mail size={16} />
+                        <div className='contact-text'>
+                            <span className='contact-label'>Email</span>
+                            <span className='contact-sublabel'>Only shared after a shift is accepted</span>
                         </div>
-                    )
-                }
+                    </div>
+                    <div className='contact-right'>
+                        {canSeeContact && email ? (
+                            <>
+                                <span className='contact-value'>{email}</span>
+                                <Eye size={16} />
+                            </>
+                        ) : (
+                            <>
+                                <span className='contact-value contact-value-private'>Private</span>
+                                <EyeOff size={16} />
+                            </>
+                        )}
+                    </div>
+                </div>
+                <div className='contact-container'>
+                    <div className='contact-left'>
+                        <Phone size={16} />
+                        <div className='contact-text'>
+                            <span className='contact-label'>Phone</span>
+                            <span className='contact-sublabel'>Only shared after a shift is accepted</span>
+                        </div>
+                    </div>
+                    <div className='contact-right'>
+                        {canSeeContact && phoneNumber ? (
+                            <>
+                                <span className='contact-value'>{phoneNumber}</span>
+                                <Eye size={16} />
+                            </>
+                        ) : (
+                            <>
+                                <span className='contact-value contact-value-private'>Private</span>
+                                <EyeOff size={16} />
+                            </>
+                        )}
+                    </div>
+                </div>
 
             </section>
         </aside>

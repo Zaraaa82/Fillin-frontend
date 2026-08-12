@@ -47,8 +47,8 @@ function ProfileFormPage() {
   }
 
   return (
-    <div>
-      <h1>{user?.isProfileComplete ? 'Edit Profile' : 'Create Profile'}</h1>
+    <div className='page-container'>
+      <h1 className='page-title'>{user?.isProfileComplete ? 'Edit Profile' : 'Create Profile'}</h1>
       {user?.role === 'worker' ? (
         <WorkerProfileForm profile={profile} />
       ) : (
