@@ -61,7 +61,7 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
         )}
         
         {status === 'completed' && attendanceStatus === 'attended' && (
-            <button type="button" onClick={() => onReview(application._id)}>Review Business</button>
+            <button type="button" className="btn btn-primary" onClick={() => onReview(application._id)}>Review Business</button>
         )}
       </div>
     </div>
