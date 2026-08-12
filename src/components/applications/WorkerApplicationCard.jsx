@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 
 function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, onReview}) {
   const navigate = useNavigate();
-  const { shift, status } = application;
+  const { shift, status, attendanceStatus } = application;
 
   function formatDate(date) {
     return new Date(date).toLocaleDateString('en-GB', {
@@ -46,7 +46,7 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
       )}
 
       <div className="application-card-actions">
-        <button  onClick={() => navigate(`/shifts/${shift._id}`)}>View Shift</button>
+        <button type="button" onClick={() => navigate(`/shifts/${shift._id}`)}>View Shift</button>
 
         {status === 'pending' && (
           <button type="button" className="danger-button" onClick={() => onWithdraw(application._id)}>Withdraw</button>
@@ -60,7 +60,7 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
             <button type="button" onClick={() => onReapply(shift._id)}>Reapply</button>
         )}
         
-        {status === 'completed' && (
+        {status === 'completed' && attendanceStatus === 'attended' && (
             <button type="button" onClick={() => onReview(application._id)}>Review Business</button>
         )}
       </div>
