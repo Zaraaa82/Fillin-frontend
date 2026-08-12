@@ -12,10 +12,21 @@ function Navbar() {
 
   return (
     <nav className='navbar'>
-      <Link to='/' className='navbar-brand'>
-        <Puzzle size={22} />
-        Fillin
-      </Link>
+
+      {
+        user?.isProfileComplete && user.role === 'worker' &&
+        <Link to='/shifts' className='navbar-brand'>
+          <Puzzle size={22} />
+          Fillin
+        </Link>  
+      }
+      {
+        user?.isProfileComplete && user.role === 'business' &&
+        <Link to='/business/shifts' className='navbar-brand'>
+          <Puzzle size={22} />
+          Fillin
+        </Link>  
+      }
 
       <div className='navbar-links'>
 
