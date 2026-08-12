@@ -13,25 +13,18 @@ function Navbar() {
   return (
     <nav className='navbar'>
 
-      {
-        user?.isProfileComplete && user.role === 'worker' &&
-        <Link to='/shifts' className='navbar-brand'>
-          <Puzzle size={22} />
-          Fillin
-        </Link>  
-      }
-      {
-        user?.isProfileComplete && user.role === 'business' &&
-        <Link to='/business/shifts' className='navbar-brand'>
-          <Puzzle size={22} />
-          Fillin
-        </Link>  
-      }
-
       <div className='navbar-links'>
 
         {
-          !user && (<NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>)
+          !user && (
+            <>
+            <Link to='/' className='navbar-brand'>
+              <Puzzle size={22} />
+              Fillin
+            </Link> 
+            <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
+            </>
+          )
         }
 
         {
@@ -43,6 +36,10 @@ function Navbar() {
         {
           user?.isProfileComplete && user.role === 'worker' && (
             <>
+              <Link to='/business/shifts' className='navbar-brand'>
+                <Puzzle size={22} />
+                Fillin
+              </Link>  
               <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
               <NavLink to='/applications/me' className={navLinkClass}>My Applications</NavLink>
             </>
@@ -52,6 +49,10 @@ function Navbar() {
         {
           user?.isProfileComplete && user.role === 'business' && (
             <>
+              <Link to='/shifts' className='navbar-brand'>
+                <Puzzle size={22} />
+                Fillin
+              </Link>  
               <NavLink to='/business/shifts' className={navLinkClass}>My Shifts</NavLink>
               <NavLink to='/shifts/create' className={navLinkClass}>Create Shift</NavLink>
             </>

@@ -121,8 +121,15 @@ function ShiftDetailsPage() {
             )}
             {user?.role === 'business' && isShiftOwner && (
                 <>
-                <button onClick={handleDelete}>Cancel Shift</button>
-                <button onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
+                {
+                    !['cancelled', 'in-progress', 'completed'].includes(shift.status) && (
+                        <>
+                            <button onClick={handleDelete}>Cancel Shift</button>
+                            <button onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
+                        </>
+
+                    )
+                }
                 <button onClick={() => navigate(`/shifts/${shiftId}/applications`)}>View Applicants</button>
                 </>
             )}
