@@ -26,11 +26,15 @@ const SignInForm = ({}) => {
       const signedInUser = await signIn(formData);
 
       setUser(signedInUser);
-      if(signedInUser.isProfileComplete){
-        navigate('/dashboard');
+
+      if (!user.isProfileComplete) {
+        navigate('/profile/form');
+      } else if (user.role === 'worker') {
+        navigate('/shifts');
       } else {
-        navigate('/profile/me');
+        navigate('/business/shifts');
       }
+      
     } catch (err) {
       console.log(`Error: ${err}`)
       setError(err?.response?.data?.message || err.message);
