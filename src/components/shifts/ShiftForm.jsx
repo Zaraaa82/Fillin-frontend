@@ -81,6 +81,23 @@ function ShiftForm({ shiftId }) {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        if (formData.requiredSkills.length === 0) {
+            setError('Please select at least one required skill.');
+            return;
+        }
+        const deadline = new Date(formData.applicationDeadline);
+        const start = new Date(formData.startTime);
+        const end = new Date(formData.endTime);
+
+        if (start >= end) {
+            setError('End time must be after the start time.');
+            return;
+        }
+
+        if (deadline >= start) {
+            setError('Application deadline must be before the shift starts.');
+            return;
+        }
         setError('');
         try {
             const savedShift = isEditMode
@@ -95,7 +112,7 @@ function ShiftForm({ shiftId }) {
     }
 
     return (
-        <div>
+        <div>{error && (<p className="error-message">Error: {error}</p>)}
             <form onSubmit={handleSubmit}>
                 <label htmlFor='title'>Title</label>
                 <input type='text' required name='title' value={formData.title} onChange={handleChange} id='title' />
