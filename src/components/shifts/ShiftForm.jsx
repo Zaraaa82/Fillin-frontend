@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { createShift, updateShift, getShiftById } from '../../services/shiftService'
@@ -75,8 +74,13 @@ function ShiftForm({ shiftId }) {
     }
 
     function handleSkillsChange(event) {
-        const selectedSkillIds = Array.from(event.target.selectedOptions, (oneSkill) => oneSkill.value);
-        setFormData({ ...formData, requiredSkills: selectedSkillIds });
+        const { value, checked } = event.target;
+        setFormData({
+            ...formData,
+            requiredSkills: checked
+                ? [...formData.requiredSkills, value]
+                : formData.requiredSkills.filter((skillId) => skillId !== value)
+        });
     }
 
     async function handleSubmit(event) {
@@ -135,12 +139,21 @@ function ShiftForm({ shiftId }) {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='requiredSkills'>Required Skills</label>
-                    <select multiple name='requiredSkills' value={formData.requiredSkills} onChange={handleSkillsChange} id='requiredSkills'>
+                    <label>Required Skills</label>
+                    <div className='skills-options'>
                         {skills.map((skill) => (
-                            <option key={skill._id} value={skill._id}>{skill.name}</option>
+                            <label key={skill._id} className='skill-option'>
+                                <input
+                                    type='checkbox'
+                                    name='requiredSkills'
+                                    value={skill._id}
+                                    checked={formData.requiredSkills.includes(skill._id)}
+                                    onChange={handleSkillsChange}
+                                />
+                                <span>{skill.name}</span>
+                            </label>
                         ))}
-                    </select>
+                    </div>
                 </div>
 
                 <div className='form-group'>

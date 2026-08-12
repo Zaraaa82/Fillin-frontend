@@ -1,14 +1,14 @@
 // src/components/SignInForm/SignInForm.jsx
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { signIn } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 
 
-const SignInForm = ({}) => {
-  const { user, setUser } = useAuth();
+const SignInForm = () => {
+  const { setUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({

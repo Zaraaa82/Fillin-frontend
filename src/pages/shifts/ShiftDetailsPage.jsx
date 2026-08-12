@@ -1,9 +1,7 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import { getShiftById, cancelShift } from '../../services/shiftService'
 import { applyToShift, getMyApplications } from '../../services/applicationService'
 import { useParams, useNavigate } from 'react-router'
-import { Link } from 'react-router'
 import { MapPin, Calendar, Clock, Wallet, Users, Puzzle } from 'lucide-react'
 import {useAuth} from '../../context/AuthContext'
 
@@ -74,11 +72,11 @@ function ShiftDetailsPage() {
     }, [shiftId, user]);
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className="page-container"><p className="error-message">Error: {error}</p></div>;
     }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="page-container"><p className="empty-state">Loading...</p></div>;
     }
     const ownerId = shift.postedBy?.owner?._id ?? shift.postedBy?.owner;
     const isShiftOwner = user?._id?.toString() === ownerId?.toString();
@@ -92,47 +90,67 @@ function ShiftDetailsPage() {
     const formatDate = (date) => new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     return (
-        <div>
-            <h2>{shift.title}</h2>
-            <p>{shift.description}</p>
-            <p>Status: {shift.status}</p>
-            <p>Required Skills: {shift.requiredSkills.map((skill) => skill.name).join(', ')}</p>
-            <p>Pay Rate: {shift.payAmount.toFixed(2)} BHD</p>
-            <p>Available Spots: {shift.availableSpots}</p>
-            <p>Application Deadline: {new Date(shift.applicationDeadline).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-            <p>Start Date: {new Date(shift.startTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-            <p>End Date: {new Date(shift.endTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-            <p>Location: {shift.location}</p>
-            {user?.role === 'worker' && user.status === 'active' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots > 0 && (
-                <button onClick={handleApply}>Apply</button>
-            )}
-            {!user && shift.status === 'open' && shift.availableSpots > 0 && (
-                <button type="button" onClick={() => navigate('/sign-in')}>Sign in to apply</button>
-            )}
+        <div className="page-container">
+            <div className="shift-details-card">
+                <div className="shift-details-header">
+                    <h2 className="shift-details-title">{shift.title}</h2>
+                    <span className={`shift-status ${statusClass}`}>{statusLabel}</span>
+                </div>
 
-            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots === 0 && (
-                <p>This shift is full.</p>
-            )}
-            {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status !== 'open' && (
-                <p>This shift is no longer accepting applications.</p>
-            )}
-            {user?.role === 'worker' && !hasApplied && hasConflict && (
-                <p>This shift conflicts with a shift you've already been accepted for.</p>
-            )}
-            {user?.role === 'business' && isShiftOwner && (
-                <>
-                {
-                    !['cancelled', 'in-progress', 'completed'].includes(shift.status) && (
-                        <>
-                            <button onClick={handleDelete}>Cancel Shift</button>
-                            <button onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
-                        </>
+                <p className="shift-description">{shift.description}</p>
 
-                    )
-                }
-                <button onClick={() => navigate(`/shifts/${shiftId}/applications`)}>View Applicants</button>
-                </>
-            )}
+                <div className="shift-details-grid">
+                    <div className="shift-meta"><Wallet size={16} /> {shift.payAmount.toFixed(2)} BHD</div>
+                    <div className="shift-meta"><Users size={16} /> {shift.availableSpots} spots available</div>
+                    <div className="shift-meta"><MapPin size={16} /> {shift.location}</div>
+                    <div className="shift-meta"><Clock size={16} /> Apply by {formatDate(shift.applicationDeadline)}</div>
+                    <div className="shift-meta"><Calendar size={16} /> Starts {formatDate(shift.startTime)}</div>
+                    <div className="shift-meta"><Calendar size={16} /> Ends {formatDate(shift.endTime)}</div>
+                </div>
+
+                <div className="shift-skills">
+                    <div className="card-heading"><Puzzle size={18} /><h3>Required Skills</h3></div>
+                    <div className="skills-container">
+                        {shift.requiredSkills.map((skill) => (
+                            <span key={skill._id ?? skill.name} className="skill-badge">{skill.name}</span>
+                        ))}
+                    </div>
+                </div>
+
+                {user?.role === 'worker' && user.status === 'active' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots > 0 && (
+                    <div className="shift-actions">
+                        <button className="btn btn-primary" onClick={handleApply}>Apply</button>
+                    </div>
+                )}
+                {!user && shift.status === 'open' && shift.availableSpots > 0 && (
+                    <div className="shift-actions">
+                        <button type="button" className="btn btn-primary" onClick={() => navigate('/sign-in')}>Sign in to apply</button>
+                    </div>
+                )}
+
+                {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status === 'open' && shift.availableSpots === 0 && (
+                    <p className="shift-note">This shift is full.</p>
+                )}
+                {user?.role === 'worker' && !hasApplied && !hasConflict && shift.status !== 'open' && (
+                    <p className="shift-note">This shift is no longer accepting applications.</p>
+                )}
+                {user?.role === 'worker' && !hasApplied && hasConflict && (
+                    <p className="shift-note">This shift conflicts with a shift you've already been accepted for.</p>
+                )}
+                {user?.role === 'business' && isShiftOwner && (
+                    <div className="shift-actions">
+                        {
+                            !['cancelled', 'in-progress', 'completed'].includes(shift.status) && (
+                                <>
+                                    <button className="btn btn-danger" onClick={handleDelete}>Cancel Shift</button>
+                                    <button className="btn" onClick={() => navigate(`/shifts/${shiftId}/edit`)}>Edit Shift</button>
+                                </>
+                            )
+                        }
+                        <button className="btn btn-primary" onClick={() => navigate(`/shifts/${shiftId}/applications`)}>View Applicants</button>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

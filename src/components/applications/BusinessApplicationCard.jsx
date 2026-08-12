@@ -72,17 +72,17 @@ function BusinessApplicationCard({
         )}
 
         {status === 'accepted' && application.shift?.status !== 'completed' && (
-            <button type="button"  onClick={() => onCancel(application._id)}>Cancel assignment</button>
+            <button type="button" className="btn btn-danger" onClick={() => onCancel(application._id)}>Cancel assignment</button>
         )}
 
         {status === 'completed' && attendanceStatus === 'attended' && (
-            <button type="button" onClick={() => onReview(application._id)}>Review Worker</button>
+            <button type="button" className="btn btn-primary" onClick={() => onReview(application._id)}>Review Worker</button>
         )}
 
         {status === 'accepted' &&  application.shift?.status === 'completed' && (
             <>
-                <button type="button" onClick={() => onAttendance(application._id, 'attended')}>Attended</button>
-                <button type="button" onClick={() => onAttendance(application._id, 'missed')}>Missed</button>
+                <button type="button" className="btn btn-primary" onClick={() => onAttendance(application._id, 'attended')}>Attended</button>
+                <button type="button" className="btn btn-danger" onClick={() => onAttendance(application._id, 'missed')}>Missed</button>
             </>
         )}
 
