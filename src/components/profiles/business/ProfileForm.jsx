@@ -80,16 +80,15 @@ function ProfileForm({ profile }) {
     return <p>Loading...</p>;
   }
 
-  if(error){
-    return <p>Error: {error}</p>
-  }
 
   return (
     <div className="business-profile-form">
+      {error && <p className="error-message">Error: {error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
+            type="text"
             id="name"
             name="name"
             value={formdata.name}
@@ -116,11 +115,12 @@ function ProfileForm({ profile }) {
         <div className="form-group">
           <label htmlFor="imageURL">Image URL</label>
           <input
+            type="url"
             id="imageURL"
             name="imageURL"
             value={formdata.imageURL}
             onChange={handleChange}
-            placeholder="https://example.com/photo.jpg"
+            placeholder="https://example.com"
             required
           />
         </div>
@@ -128,6 +128,7 @@ function ProfileForm({ profile }) {
         <div className="form-group">
           <label htmlFor="websiteURL">Website URL</label>
           <input
+            type="url"
             id="websiteURL"
             name="websiteURL"
             value={formdata.websiteURL}
