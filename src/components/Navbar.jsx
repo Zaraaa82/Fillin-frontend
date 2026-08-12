@@ -18,22 +18,37 @@ function Navbar() {
       </Link>
 
       <div className='navbar-links'>
-        <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
-        {user && (
-          <>
-            <NavLink to='/dashboard' className={navLinkClass}>Dashboard</NavLink>
-            <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
-            {user.role === 'business' && (
-              <>
-                <NavLink to='/business/shifts' className={navLinkClass}>My Shifts</NavLink>
-                <NavLink to='/shifts/create' className={navLinkClass}>Create Shift</NavLink>
-              </>
-            )}
-            {user.role === 'worker' && (
+
+        {
+          !user && (<NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>)
+        }
+
+        {
+          user && !user.isProfileComplete && (
+            <NavLink to='/profile/form' className={navLinkClass}>Create Profile</NavLink>
+          )
+        }
+
+        {
+          user?.isProfileComplete && user.role === 'worker' && (
+            <>
+              <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
               <NavLink to='/applications/me' className={navLinkClass}>My Applications</NavLink>
-            )}
-          </>
-        )}
+              <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
+            </>
+          )
+        }
+
+        {
+          user?.isProfileComplete && user.role === 'business' && (
+            <>
+              <NavLink to='/business/shifts' className={navLinkClass}>My Shifts</NavLink>
+              <NavLink to='/shifts/create' className={navLinkClass}>Create Shift</NavLink>
+              <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
+            </>
+          )
+        }
+        
       </div>
 
       <div className='navbar-actions'>
