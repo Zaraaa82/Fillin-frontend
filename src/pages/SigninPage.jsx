@@ -27,9 +27,9 @@ const SignInForm = ({}) => {
 
       setUser(signedInUser);
 
-      if (!user.isProfileComplete) {
+      if (!signedInUser.isProfileComplete) {
         navigate('/profile/form');
-      } else if (user.role === 'worker') {
+      } else if (signedInUser.role === 'worker') {
         navigate('/shifts');
       } else {
         navigate('/business/shifts');
