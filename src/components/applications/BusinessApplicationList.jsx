@@ -2,7 +2,7 @@ import BusinessApplicationCard from './BusinessApplicationCard';
 import { useNavigate } from 'react-router';
 
 
-function BusinessApplicationList({ applications, onAccept, onReject, onCancel}) {
+function BusinessApplicationList({ applications, onAccept, onReject, onCancel, onAttendance}) {
     const navigate = useNavigate();
 
     function handleReview(applicationId) {
@@ -19,6 +19,7 @@ function BusinessApplicationList({ applications, onAccept, onReject, onCancel}) 
                     onReject={onReject}
                     onCancel={onCancel}
                     onReview={handleReview}
+                    onAttendance={onAttendance}
                 />
             ))}
         </div>

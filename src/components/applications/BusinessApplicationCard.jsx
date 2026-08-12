@@ -6,9 +6,10 @@ function BusinessApplicationCard({
   onReject,
   onCancel,
   onReview,
+  onAttendance
 }) {
   const navigate = useNavigate();
-  const { worker, status } = application;
+  const { worker, status, attendanceStatus  } = application;
 
   return (
     <div className="application-card business-application-card">
@@ -34,7 +35,7 @@ function BusinessApplicationCard({
 
         <div>
           <span>Reliability</span>
-          <strong>{worker.reliabilityPercentage ?? 100}</strong>
+          <strong>{worker.reliabilityPercentage ?? 100}%</strong>
         </div>
 
         <div>
@@ -44,7 +45,7 @@ function BusinessApplicationCard({
 
           <div>
             <span>Skill match</span>
-            <strong>{application.matchPercentage}%</strong>
+            <strong>{application.matchPercentage ?? 0}%</strong>
           </div>
       </div>
 
@@ -61,7 +62,7 @@ function BusinessApplicationCard({
       </div>
 
       <div className="application-card-actions">
-        <button type="button"  onClick={() => navigate(`/profile/${worker._id}`)}>View profile</button>
+        <button type="button"  onClick={() => navigate(`/profile/worker/${worker._id}`)}>View profile</button>
 
         {status === 'pending' && (
           <>
@@ -70,12 +71,19 @@ function BusinessApplicationCard({
           </>
         )}
 
-        {status === 'accepted' && (
-            <button type="button" onClick={() => onCancel(application._id)}>Cancel assignment</button>
+        {status === 'accepted' && application.shift?.status !== 'completed' && (
+            <button type="button"  onClick={() => onCancel(application._id)}>Cancel assignment</button>
         )}
 
-        {status === 'completed' && (
+        {status === 'completed' && attendanceStatus === 'attended' && (
             <button type="button" onClick={() => onReview(application._id)}>Review Worker</button>
+        )}
+
+        {status === 'accepted' &&  application.shift?.status === 'completed' && (
+            <>
+                <button type="button" onClick={() => onAttendance(application._id, 'attended')}>Attended</button>
+                <button type="button" onClick={() => onAttendance(application._id, 'missed')}>Missed</button>
+            </>
         )}
 
 
