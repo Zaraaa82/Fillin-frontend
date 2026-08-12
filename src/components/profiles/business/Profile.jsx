@@ -1,16 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { getBusinessReviews } from '../../../services/reviewService';
+import ReviewList from '../../reviews/ReviewList';
 
 export function Profile({ profile }) {
     const {user} = useAuth();
     const navigate = useNavigate();
+    const [reviews, setReviews] = useState([]);
+
+    async function fetchReviews() {
+        if (!profile?._id) return;
+        try {
+            setReviews(await getBusinessReviews(profile._id));
+        } catch {
+            setReviews([]);
+        }
+    }
+
+    useEffect(() => {
+        fetchReviews();
+    }, [profile?._id]);
 
     if (!profile) {
       return <div>No business profile found.</div>
     }
     const ownerId = profile.owner._id;
-    const isOwner = user?._id.toString() === ownerId.toString();
+    const isOwner = user?._id?.toString() === ownerId.toString();
     const status = isOwner? user?.status : profile.owner.status;
     const email = isOwner? user.email : profile.owner.email;
     const phoneNumber = isOwner? user.phoneNumber : profile.owner.phoneNumber;
@@ -34,6 +50,11 @@ export function Profile({ profile }) {
                 <section className="profile-about">
                     <h3>About</h3>
                     <p>{profile.description}</p>
+                </section>
+
+                <section className='profile-reviews'>
+                    <h3>Reviews</h3>
+                    <ReviewList reviews={reviews} onUpdate={fetchReviews} />
                 </section>
             </div>
             <aside className="profile-sidebar">

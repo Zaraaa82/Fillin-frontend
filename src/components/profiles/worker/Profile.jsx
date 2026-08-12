@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { getWorkerReviews } from '../../../services/reviewService';
+import ReviewList from '../../reviews/ReviewList';
 
 
 function Profile({ profile }) {
     const {user} = useAuth();
     const navigate = useNavigate();
+    const [reviews, setReviews] = useState([]);
+
+    async function fetchReviews() {
+        if (!profile?._id) return;
+        try {
+            setReviews(await getWorkerReviews(profile._id));
+        } catch {
+            setReviews([]);
+        }
+    }
+
+    useEffect(() => {
+        fetchReviews();
+    }, [profile?._id]);
+
     if (!profile) {
       return <div>No Worker profile found.</div>
     }
@@ -91,6 +108,10 @@ function Profile({ profile }) {
                 </div>
             </section>
 
+            <section className='profile-reviews'>
+                <h3>Reviews</h3>
+                <ReviewList reviews={reviews} onUpdate={fetchReviews} />
+            </section>
 
         </div>
 
