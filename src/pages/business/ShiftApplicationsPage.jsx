@@ -6,6 +6,7 @@ import {
   acceptApplication,
   rejectApplication,
   cancelAssignment,
+  updateAttendance
 } from '../../services/applicationService';
 import BusinessApplicationList from '../../components/applications/BusinessApplicationList';
 
@@ -49,7 +50,7 @@ function ShiftApplicationsPage() {
         }
     }
 
-  async function handleReject(applicationId) {
+    async function handleReject(applicationId) {
         try {
             setError(null);
             await rejectApplication(
@@ -63,10 +64,20 @@ function ShiftApplicationsPage() {
         }
     }
 
-  async function handleCancel(applicationId) {
+    async function handleCancel(applicationId) {
         try {
             setError(null);
             await cancelAssignment(applicationId);
+            await fetchApplications();
+        } catch (err) {
+            setError(err.message);
+        }
+    }
+   
+    async function handleAttendance(applicationId, attendanceStatus) {
+        try {
+            setError(null);
+            await updateAttendance(applicationId, {attendanceStatus});
             await fetchApplications();
         } catch (err) {
             setError(err.message);
@@ -92,6 +103,7 @@ function ShiftApplicationsPage() {
                         onAccept={handleAccept}
                         onReject={handleReject}
                         onCancel={handleCancel}
+                        onAttendance={handleAttendance}
                     />
                 )}
         </div>

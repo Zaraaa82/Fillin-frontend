@@ -99,13 +99,12 @@ export function ProfileForm({ profile }) {
         return <p>Loading...</p>
     }
 
-    if(error){
-        return <p>Error: {error}</p>
-    }
 
 
   return (
-    <div className='form-card'>
+    <div>
+        {error && <p className="error-message">Error: {error}</p>}
+
         <form onSubmit={handleSubmit}>
             <div className='form-group'>
                 <label htmlFor="fullName">Full Name</label>

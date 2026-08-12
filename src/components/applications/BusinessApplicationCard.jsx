@@ -6,9 +6,10 @@ function BusinessApplicationCard({
   onReject,
   onCancel,
   onReview,
+  onAttendance
 }) {
   const navigate = useNavigate();
-  const { worker, status } = application;
+  const { worker, status, attendanceStatus  } = application;
 
   return (
     <div className="application-card business-application-card">
@@ -44,7 +45,7 @@ function BusinessApplicationCard({
 
           <div>
             <span>Skill match</span>
-            <strong>{application.matchPercentage}%</strong>
+            <strong>{application.matchPercentage ?? 0}%</strong>
           </div>
       </div>
 
@@ -70,12 +71,19 @@ function BusinessApplicationCard({
           </>
         )}
 
-        {status === 'accepted' && (
-            <button type="button" className="btn btn-danger" onClick={() => onCancel(application._id)}>Cancel assignment</button>
+        {status === 'accepted' && application.shift?.status !== 'completed' && (
+            <button type="button"  onClick={() => onCancel(application._id)}>Cancel assignment</button>
         )}
 
-        {status === 'completed' && (
-            <button type="button" className="btn btn-primary" onClick={() => onReview(application._id)}>Review Worker</button>
+        {status === 'completed' && attendanceStatus === 'attended' && (
+            <button type="button" onClick={() => onReview(application._id)}>Review Worker</button>
+        )}
+
+        {status === 'accepted' &&  application.shift?.status === 'completed' && (
+            <>
+                <button type="button" onClick={() => onAttendance(application._id, 'attended')}>Attended</button>
+                <button type="button" onClick={() => onAttendance(application._id, 'missed')}>Missed</button>
+            </>
         )}
 
 

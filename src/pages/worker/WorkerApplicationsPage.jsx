@@ -3,12 +3,13 @@ import { getMyApplications, withdrawApplication, applyToShift, cancelAssignment}
 import WorkerApplicationList from '../../components/applications/WorkerApplicationList';
 function WorkerApplicationsPage() {
     const [applications, setApplications] = useState([]);
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
     async function fetchApplications() {
         setLoading(true);
         try {
+            setError(null);
             const response = await getMyApplications();
             setApplications(response);
         } catch (err) {
