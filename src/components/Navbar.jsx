@@ -34,7 +34,6 @@ function Navbar() {
             <>
               <NavLink to='/shifts' className={navLinkClass}>All Shifts</NavLink>
               <NavLink to='/applications/me' className={navLinkClass}>My Applications</NavLink>
-              <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
             </>
           )
         }
@@ -44,7 +43,6 @@ function Navbar() {
             <>
               <NavLink to='/business/shifts' className={navLinkClass}>My Shifts</NavLink>
               <NavLink to='/shifts/create' className={navLinkClass}>Create Shift</NavLink>
-              <NavLink to='/profile/me' className={navLinkClass}>Profile</NavLink>
             </>
           )
         }
@@ -54,8 +52,11 @@ function Navbar() {
       <div className='navbar-actions'>
         {user ? (
           <>
-            <span className='navbar-avatar'>{initial}</span>
-            <span className='navbar-username'>{user.username}</span>
+            <NavLink to='/profile/me' className={navLinkClass}>
+              <span className='navbar-avatar'>{initial}</span>
+              <span className='navbar-username'>{user.username}</span>
+            </NavLink>
+            
             <button onClick={logout} className='btn'><LogOut size={16} />Sign Out</button>
           </>
         ) : (
