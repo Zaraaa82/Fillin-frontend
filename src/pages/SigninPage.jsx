@@ -38,39 +38,43 @@ const SignInForm = ({}) => {
   };
 
   return (
-    <main>
-      <h1>Sign In</h1>
-      <p className='error'>{error}</p>
-      <form autoComplete='off' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='email'>Username:</label>
-          <input
-            type='text'
-            autoComplete='off'
-            id='username'
-            value={formData.username}
-            name='username'
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            autoComplete='off'
-            id='password'
-            value={formData.password}
-            name='password'
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button>Sign In</button>
-          <button onClick={() => navigate('/')}>Cancel</button>
-        </div>
-      </form>
+    <main className='auth-page'>
+      <div className='auth-card'>
+        <h1 className='auth-title'>Sign In</h1>
+        {error && <p className='error'>{error}</p>}
+        <form autoComplete='off' onSubmit={handleSubmit}>
+          <div className='form-group'>
+            <label htmlFor='username' className='form-label'>Username</label>
+            <input
+              type='text'
+              autoComplete='off'
+              id='username'
+              className='form-input'
+              value={formData.username}
+              name='username'
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label htmlFor='password' className='form-label'>Password</label>
+            <input
+              type='password'
+              autoComplete='off'
+              id='password'
+              className='form-input'
+              value={formData.password}
+              name='password'
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className='form-actions'>
+            <button className='btn btn-primary btn-block'>Sign In</button>
+            <button type='button' onClick={() => navigate('/')} className='btn btn-block'>Cancel</button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 };

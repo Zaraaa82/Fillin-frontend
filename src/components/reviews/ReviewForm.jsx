@@ -46,10 +46,12 @@ function ReviewForm({ initialRating = 5, initialComment = '', onSubmit, onCancel
                 />
             </div>
 
-            <button type='submit' disabled={submitting}>{submitLabel}</button>
-            {onCancel && (
-                <button type='button' disabled={submitting} onClick={onCancel}>Cancel</button>
-            )}
+            <div className='shift-actions'>
+                <button type='submit' className='btn btn-primary' disabled={submitting}>{submitLabel}</button>
+                {onCancel && (
+                    <button type='button' className='btn' disabled={submitting} onClick={onCancel}>Cancel</button>
+                )}
+            </div>
         </form>
     )
 }

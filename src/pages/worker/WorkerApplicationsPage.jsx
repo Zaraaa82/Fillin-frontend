@@ -58,11 +58,11 @@ function WorkerApplicationsPage() {
 
     return (
         <main className="applications-page">
-            <h1>My Applications</h1>
+            <h1 className="page-title">My Applications</h1>
             {error && (<p className="error-message">Error: {error}</p>)}
-            
-            {applications.length === 0? 
-                <p>You have not applied to any shifts yet.</p>
+
+            {applications.length === 0?
+                <p className="empty-state">You have not applied to any shifts yet.</p>
             : (
                 <WorkerApplicationList
                     applications={applications}

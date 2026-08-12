@@ -46,22 +46,22 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
       )}
 
       <div className="application-card-actions">
-        <button  onClick={() => navigate(`/shifts/${shift._id}`)}>View Shift</button>
+        <button className="btn" onClick={() => navigate(`/shifts/${shift._id}`)}>View Shift</button>
 
         {status === 'pending' && (
-          <button type="button" className="danger-button" onClick={() => onWithdraw(application._id)}>Withdraw</button>
+          <button type="button" className="btn btn-danger" onClick={() => onWithdraw(application._id)}>Withdraw</button>
         )}
 
         {status === 'accepted' && (
-            <button type="button" onClick={() => onCancel(application._id)}>Cancel assignment</button>
+            <button type="button" className="btn btn-danger" onClick={() => onCancel(application._id)}>Cancel assignment</button>
         )}
 
         {status === 'withdrawn' && shift.status === 'open' && (
-            <button type="button" onClick={() => onReapply(shift._id)}>Reapply</button>
+            <button type="button" className="btn" onClick={() => onReapply(shift._id)}>Reapply</button>
         )}
-        
+
         {status === 'completed' && (
-            <button type="button" onClick={() => onReview(application._id)}>Review Business</button>
+            <button type="button" className="btn btn-primary" onClick={() => onReview(application._id)}>Review Business</button>
         )}
       </div>
     </div>

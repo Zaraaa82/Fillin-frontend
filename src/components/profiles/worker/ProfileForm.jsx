@@ -105,7 +105,7 @@ export function ProfileForm({ profile }) {
 
 
   return (
-    <div>
+    <div className='form-card'>
         <form onSubmit={handleSubmit}>
             <div className='form-group'>
                 <label htmlFor="fullName">Full Name</label>
@@ -177,7 +177,7 @@ export function ProfileForm({ profile }) {
                 />
             </div>
 
-            <button type='submit' disabled={sending}>
+            <button type='submit' className='btn btn-primary btn-block' disabled={sending}>
                 {sending
                     ? (profile ? 'Updating...' : 'Creating...')
                     : (profile ? 'Update' : 'Create')}

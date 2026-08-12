@@ -29,13 +29,7 @@ function ProfilePage() {
     if(error){
         return <p>Error: {error}</p>
     }
-  return (
-    <div>
-        <h1>Worker Profile Page</h1>
-        <WorkerProfile profile={profile}/>
-
-    </div>
-  )
+  return <WorkerProfile profile={profile}/>;
 }
 
 export default ProfilePage

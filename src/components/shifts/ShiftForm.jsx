@@ -95,40 +95,60 @@ function ShiftForm({ shiftId }) {
     }
 
     return (
-        <div>
+        <div className='form-card'>
             <form onSubmit={handleSubmit}>
-                <label htmlFor='title'>Title</label>
-                <input type='text' required name='title' value={formData.title} onChange={handleChange} id='title' />
+                <div className='form-group'>
+                    <label htmlFor='title'>Title</label>
+                    <input type='text' required name='title' value={formData.title} onChange={handleChange} id='title' />
+                </div>
 
-                <label htmlFor='description'>Description</label>
-                <input type='text' required name='description' value={formData.description} onChange={handleChange} id='description' />
+                <div className='form-group'>
+                    <label htmlFor='description'>Description</label>
+                    <input type='text' required name='description' value={formData.description} onChange={handleChange} id='description' />
+                </div>
 
-                <label htmlFor='payAmount'>Pay Amount</label>
-                <input type='number' required min="10" name='payAmount' value={formData.payAmount} onChange={handleChange} id='payAmount' />
+                <div className='form-group'>
+                    <label htmlFor='payAmount'>Pay Amount</label>
+                    <input type='number' required min="10" name='payAmount' value={formData.payAmount} onChange={handleChange} id='payAmount' />
+                </div>
 
-                <label htmlFor='capacity'>Capacity</label>
-                <input type='number' required min="1" name='capacity' value={formData.capacity} onChange={handleChange} id='capacity' />
+                <div className='form-group'>
+                    <label htmlFor='capacity'>Capacity</label>
+                    <input type='number' required min="1" name='capacity' value={formData.capacity} onChange={handleChange} id='capacity' />
+                </div>
 
-                <label htmlFor='requiredSkills'>Required Skills</label>
-                <select multiple name='requiredSkills' value={formData.requiredSkills} onChange={handleSkillsChange} id='requiredSkills'>
-                    {skills.map((skill) => (
-                        <option key={skill._id} value={skill._id}>{skill.name}</option>
-                    ))}
-                </select>
+                <div className='form-group'>
+                    <label htmlFor='requiredSkills'>Required Skills</label>
+                    <select multiple name='requiredSkills' value={formData.requiredSkills} onChange={handleSkillsChange} id='requiredSkills'>
+                        {skills.map((skill) => (
+                            <option key={skill._id} value={skill._id}>{skill.name}</option>
+                        ))}
+                    </select>
+                </div>
 
-                <label htmlFor='applicationDeadline'>Application Deadline</label>
-                <input type='date' required name='applicationDeadline' value={formData.applicationDeadline} onChange={handleChange} id='applicationDeadline' />
+                <div className='form-group'>
+                    <label htmlFor='applicationDeadline'>Application Deadline</label>
+                    <input type='date' required name='applicationDeadline' value={formData.applicationDeadline} onChange={handleChange} id='applicationDeadline' />
+                </div>
 
-                <label htmlFor='startTime'>Start Time</label>
-                <input type='datetime-local' required name='startTime' value={formData.startTime} onChange={handleChange} id='startTime' />
+                <div className='form-group'>
+                    <label htmlFor='startTime'>Start Time</label>
+                    <input type='datetime-local' required name='startTime' value={formData.startTime} onChange={handleChange} id='startTime' />
+                </div>
 
-                <label htmlFor='endTime'>End Time</label>
-                <input type='datetime-local' required name='endTime' value={formData.endTime} onChange={handleChange} id='endTime' />
+                <div className='form-group'>
+                    <label htmlFor='endTime'>End Time</label>
+                    <input type='datetime-local' required name='endTime' value={formData.endTime} onChange={handleChange} id='endTime' />
+                </div>
 
-                <label htmlFor='location'>Location</label>
-                <input type='text' required name='location' value={formData.location} onChange={handleChange} id='location' />
+                <div className='form-group'>
+                    <label htmlFor='location'>Location</label>
+                    <input type='text' required name='location' value={formData.location} onChange={handleChange} id='location' />
+                </div>
 
-                <button type="submit">{isEditMode ? 'Save Changes' : 'Create Shift'}</button>
+                {error && <p className='error'>{error}</p>}
+
+                <button type="submit" className='btn btn-primary btn-block'>{isEditMode ? 'Save Changes' : 'Create Shift'}</button>
 
             </form>
         </div>

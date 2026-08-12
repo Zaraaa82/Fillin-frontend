@@ -79,13 +79,13 @@ function ShiftApplicationsPage() {
     }
     
     return (
-        <div>
-            <h1>Shift Applications</h1>
+        <div className='page-container'>
+            <h1 className='page-title'>Shift Applications</h1>
             {error && (<p className="error-message">Error: {error}</p>)}
 
-            {applications.length === 0 ? 
+            {applications.length === 0 ?
                 (
-                    <p>No workers have applied to this shift.</p>
+                    <p className='empty-state'>No workers have applied to this shift.</p>
                 ) : (
                     <BusinessApplicationList
                         applications={applications}
