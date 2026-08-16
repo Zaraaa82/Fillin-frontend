@@ -54,7 +54,7 @@ function Profile({ profile }) {
 
                 <h1 className='profile-fullName'>{profile.fullName}</h1>
                 <p className='profile-location'><MapPin size={16} />{profile.location}</p>
-                { status && (<p className='profile-user-status'>{status}</p>)}
+                { status && (<p className='profile-user-status'>{status === 'active'? 'Active': 'Suspended'}</p>)}
                 {isOwner && (
                     <>
                         {user.status === 'suspended' && user.suspendedUntil && (

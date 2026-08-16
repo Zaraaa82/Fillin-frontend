@@ -33,7 +33,7 @@ function LandingPage() {
         </div>
 
         <div className='hero-image'>
-          <div className='shift-card'>
+          <div className='shift-card hero-shift-card'>
             <div className='shift-card-header'>
               <span className='shift-icon'><BriefcaseBusiness size={21}/></span>
               <span className='shift-status shift-status-open'>Open</span>

@@ -64,12 +64,12 @@ function Navbar() {
       <div className='navbar-actions'>
         {user ? (
           <>
-            <NavLink to='/profile/me' className={navLinkClass}>
+            <NavLink to='/profile/me' className='navbar-user'>
               <span className='navbar-avatar'>{initial}</span>
               <span className='navbar-username'>{user.username}</span>
             </NavLink>
             
-            <button onClick={logout} className='btn'><LogOut size={16} />Sign Out</button>
+            <button onClick={logout} className='btn sign-out'><LogOut size={16} /></button>
           </>
         ) : (
           <>
