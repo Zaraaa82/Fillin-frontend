@@ -57,7 +57,7 @@ function WorkerApplicationCard({  application, onWithdraw, onReapply, onCancel, 
         )}
 
         {status === 'withdrawn' && shift.status === 'open' && (
-            <button type="button" className="btn" onClick={() => onReapply(shift._id)}>Reapply</button>
+            <button type="button" className="btn btn-primary" onClick={() => onReapply(shift._id)}>Reapply</button>
         )}
         
         {status === 'completed' && attendanceStatus === 'attended' && (

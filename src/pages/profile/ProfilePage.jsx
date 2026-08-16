@@ -5,6 +5,7 @@ import {getMyProfile as getWorkerProfile} from '../../services/workerProfileServ
 import {getMyProfile as getBusinessProfile} from '../../services/businessProfileService';
 import WorkerProfile from '../../components/profiles/worker/Profile';
 import BusinessProfile from '../../components/profiles/business/Profile';
+import { Flex, Spin } from 'antd';
 
 function ProfilePage() {
     const {user} = useAuth();
@@ -32,9 +33,13 @@ function ProfilePage() {
         fetchProfile();
     },[]);
 
-    if(loading){
-        return <p>Loading...</p>
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
 
     if(error){
         return <p>Error: {error}</p>

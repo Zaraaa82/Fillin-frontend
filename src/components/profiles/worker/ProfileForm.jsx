@@ -3,6 +3,8 @@ import {getSkills} from '../../../services/skillService';
 import { useAuth } from '../../../context/AuthContext';
 import { createProfile, updateProfile } from '../../../services/workerProfileService';
 import { useNavigate, useParams } from 'react-router';
+import { Flex, Spin } from 'antd';
+
 
 export function ProfileForm({ profile }) {
     const {user, setUser} = useAuth();
@@ -53,11 +55,11 @@ export function ProfileForm({ profile }) {
             return;
         }
 
+        const hasExistingProfile = Boolean(profile);
         try {
             setSending(true);
             setError(null);
 
-            const hasExistingProfile = Boolean(profile);
 
             if (!hasExistingProfile) {
                 await createProfile(formdata);
@@ -95,9 +97,13 @@ export function ProfileForm({ profile }) {
         });
     }
 
-    if(loading){
-        return <p>Loading...</p>
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
 
 
 
@@ -106,6 +112,7 @@ export function ProfileForm({ profile }) {
         {error && <p className="error-message">Error: {error}</p>}
 
         <form onSubmit={handleSubmit}>
+            <p className='auth-title'>{profile? 'Update': 'Create'} Profile</p>
             <div className='form-group'>
                 <label htmlFor="fullName">Full Name</label>
                 <input 
