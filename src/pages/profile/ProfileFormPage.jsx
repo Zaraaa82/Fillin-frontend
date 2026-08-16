@@ -4,6 +4,7 @@ import {getMyProfile as getWorkerProfile} from '../../services/workerProfileServ
 import {getMyProfile as getBusinessProfile} from '../../services/businessProfileService';
 import WorkerProfileForm from '../../components/profiles/worker/ProfileForm';
 import BusinessProfileForm from '../../components/profiles/business/ProfileForm';
+import { Flex, Spin } from 'antd';
 
 
 function ProfileFormPage() {
@@ -38,8 +39,12 @@ function ProfileFormPage() {
     fetchProfile();
   }, [user]);
 
-  if(loading){
-    return <p>Loading...</p>
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
   }
 
   if(error){
@@ -48,7 +53,6 @@ function ProfileFormPage() {
 
   return (
     <div className='page-container'>
-      <h1 className='page-title'>{user?.isProfileComplete ? 'Edit Profile' : 'Create Profile'}</h1>
       {user?.role === 'worker' ? (
         <WorkerProfileForm profile={profile} />
       ) : (

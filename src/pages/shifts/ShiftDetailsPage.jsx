@@ -4,6 +4,7 @@ import { applyToShift, getMyApplications } from '../../services/applicationServi
 import { useParams, useNavigate } from 'react-router'
 import { MapPin, Calendar, Clock, Wallet, Users, Puzzle } from 'lucide-react'
 import {useAuth} from '../../context/AuthContext'
+import { Flex, Spin } from 'antd';
 
 function ShiftDetailsPage() {
     const [shift, setShift] = useState();
@@ -35,11 +36,11 @@ function ShiftDetailsPage() {
         try {
             const myApplications = await getMyApplications();
             setHasApplied(myApplications.some((application) =>
-                application.shift._id === shiftId && application.status !== 'withdrawn'
+                application.shift && application.shift._id && application.shift._id.toString() === shiftId && application.status !== 'withdrawn'
             ));
             setHasConflict(myApplications.some((application) =>
                 application.status === 'accepted' &&
-                application.shift._id !== shiftId &&
+                application.shift && application.shift._id && application.shift._id.toString() !== shiftId &&
                 new Date(currentShift.startTime) < new Date(application.shift.endTime) &&
                 new Date(currentShift.endTime) > new Date(application.shift.startTime)
             ));
@@ -75,9 +76,13 @@ function ShiftDetailsPage() {
         return <div className="page-container"><p className="error-message">Error: {error}</p></div>;
     }
 
-    if (loading) {
-        return <div className="page-container"><p className="empty-state">Loading...</p></div>;
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
     const ownerId = shift.postedBy?.owner?._id ?? shift.postedBy?.owner;
     const isShiftOwner = user?._id?.toString() === ownerId?.toString();
 

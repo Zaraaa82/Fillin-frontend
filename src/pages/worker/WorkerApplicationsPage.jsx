@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { getMyApplications, withdrawApplication, applyToShift, cancelAssignment} from '../../services/applicationService';
 import WorkerApplicationList from '../../components/applications/WorkerApplicationList';
+import { Flex, Spin } from 'antd';
+
 function WorkerApplicationsPage() {
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState(null);
@@ -53,9 +55,13 @@ function WorkerApplicationsPage() {
         }
     }
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
 
     return (
         <main className="applications-page">

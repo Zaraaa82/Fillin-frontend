@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createProfile, updateProfile } from '../../../services/businessProfileService';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { Flex, Spin } from 'antd';
 
 
 function ProfileForm({ profile }) {
@@ -42,13 +43,13 @@ function ProfileForm({ profile }) {
     fetchProfile();
   }, [profile]);
   
+  const hasExistingProfile = Boolean(profile);
   async function handleSubmit(event){
     event.preventDefault();
     try{
       setSending(true);
       setError(null);
 
-      const hasExistingProfile = Boolean(profile);
        if (!hasExistingProfile) {
         await createProfile(formdata);
       } else {
@@ -77,12 +78,17 @@ function ProfileForm({ profile }) {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
   }
 
 
   return (
     <div className="form-card">
+      <p className='auth-title'>{profile? 'Update': 'Create'} Profile</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>

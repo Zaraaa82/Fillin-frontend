@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {getBusinessProfile} from '../../services/businessProfileService';
 import BusinessProfile from '../../components/profiles/business/Profile';
 import { useParams } from 'react-router';
+import { Flex, Spin } from 'antd';
 
 function ProfilePage() {
     const {id} = useParams();
@@ -22,9 +23,13 @@ function ProfilePage() {
         fetchProfile();
     },[id]);
 
-    if(loading){
-        return <p>Loading...</p>
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
 
     if(error){
         return <p>Error: {error}</p>
