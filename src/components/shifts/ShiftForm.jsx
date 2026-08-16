@@ -93,15 +93,7 @@ function ShiftForm({ shiftId }) {
         const start = new Date(formData.startTime);
         const end = new Date(formData.endTime);
 
-        if (start >= end) {
-            setError('End time must be after the start time.');
-            return;
-        }
 
-        if (deadline >= start) {
-            setError('Application deadline must be before the shift starts.');
-            return;
-        }
         setError('');
         try {
             const savedShift = isEditMode
@@ -117,6 +109,7 @@ function ShiftForm({ shiftId }) {
 
     return (
         <div className='form-card'>
+            {<p className=' auth-title'>{isEditMode? 'Edit': 'Create'} Shift</p>}
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='title'>Title</label>

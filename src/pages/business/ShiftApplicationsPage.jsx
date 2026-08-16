@@ -9,6 +9,7 @@ import {
   updateAttendance
 } from '../../services/applicationService';
 import BusinessApplicationList from '../../components/applications/BusinessApplicationList';
+import { Flex, Spin } from 'antd';
 
 
 
@@ -85,9 +86,13 @@ function ShiftApplicationsPage() {
     }
 
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+  if (loading) {
+    return(
+      <Flex justify="center" align="center" style={{ height: '50vh' }}>
+        <Spin size="large" style={{color: '#14b8a6'}}/>
+      </Flex>
+    )
+  }
     
     return (
         <div className='page-container'>
